@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p>A <strong>SigilPass</strong> közvetlenül a böngészőben készít véletlen jelszavakat. Állítsa be a hosszt és a karaktereket, töltsön ki űrlapokat egy kattintással, vagy használja a “Safer” módot megjelenítés és másolás nélkül.</p>
+
+<h3>Használatra kész jelszó</h3>
+<ul>
+  <li><strong>Kriptográfiailag biztonságos generálás :</strong> Web Crypto, nem biztonságos véletlengenerátorra való visszaesés nélkül.</li>
+  <li><strong>Állítható hossz :</strong> 12–64 karakter, választható nagybetűkkel, számokkal és szimbólumokkal.</li>
+  <li><strong>Közvetlen kitöltés :</strong> gombok a jelszómezők mellett, beleértve a felismert megerősítő mezőket.</li>
+  <li><strong>Entrópiamérő :</strong> óvatos becslés bitekben és a lehetséges kombinációk számáról.</li>
+  <li><strong>Választható automatikus másolás :</strong> alapból kikapcsolva; szükség esetén a beállításokban engedélyezhető.</li>
+</ul>
+
+<h3>Két mód az igényeihez</h3>
+<p>A “Standard” módban beállítható a hossz, a karaktertípusok, a jelszó megjelenítése és az automatikus másolás.</p>
+
+<p>A “Safer” további védelmet alkalmaz:</p>
+<ul>
+  <li>Minimum: 24 karakter, növelhető hosszúsággal.</li>
+  <li>Nagy- és kisbetűk, számok és szimbólumok.</li>
+  <li>Nincs jelszóelőnézet vagy vágólapra másolás.</li>
+  <li>Csak közvetlen kitöltés biztonságos környezetben, például HTTPS alatt.</li>
+  <li>Az ideiglenes szkriptadatok törlése a lap elrejtésekor vagy elhagyásakor.</li>
+</ul>
+
+<p>A “Standard” beállításai módváltáskor megmaradnak.</p>
+
+<h3>Testreszabható felület</h3>
+<ul>
+  <li>Alapértelmezett sötét vagy kék téma.</li>
+  <li>Összecsukható beállítási szakaszok.</li>
+  <li>A lebegő és a mező melletti gombok külön elrejthetők.</li>
+  <li>46 nyelv és területi változat választható.</li>
+  <li>Generálás és beállítások a szkriptkezelő menüjéből.</li>
+</ul>
+
+<h3>Telepítés</h3>
+<ol>
+  <li>Telepítse a szkriptet felhasználói szkriptkezelővel. Ajánlás: <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+  <li>Nyissa meg a beállításokat a lebegő gombbal vagy a kezelő menüjéből, majd válasszon beállításokat.</li>
+  <li>Használja a jelszómező melletti gombot a közvetlen kitöltéshez.</li>
+</ol>
+
+<h3>Adatvédelem és korlátok</h3>
+<p>A generálás helyben történik: a szkript nem küld hálózati kéréseket és nem tárol tartósan jelszavakat. A kezelő csak a beállításokat menti. A SigilPass generátor, nem jelszószéf.</p>
+
+<p>A kitöltött jelszóhoz az űrlapot fogadó webhely hozzáférhet. A “Safer” csökkenti a felületen és a vágólapon való kitettséget; egy rosszindulatú webhelyet nem tesz megbízhatóvá.</p>
+
+<h3>Forráskód és segítség</h3>
+<p>Tekintse meg a <a href="https://github.com/DREwX-code/SigilPass">forráskódot a GitHubon</a>, vagy <a href="https://github.com/DREwX-code/SigilPass/issues">jelentsen hibát</a>. Adja meg a böngészőt, a szkriptkezelőt és az előidézés lépéseit jelszavak megosztása nélkül.</p>

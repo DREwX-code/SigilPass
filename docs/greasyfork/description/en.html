@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> generates random passwords directly in your browser. Customize their length and characters, fill forms in one click, or use “Safer” mode for direct filling without preview or copying.</p>
+
+<h3>A password ready to use</h3>
+<ul>
+  <li><strong>Cryptographically secure generation :</strong> Web Crypto, with no fallback to an insecure random generator.</li>
+  <li><strong>Customizable length :</strong> 12–64 characters, with optional uppercase letters, numbers and symbols.</li>
+  <li><strong>Direct filling :</strong> buttons beside password fields, including detected confirmation fields.</li>
+  <li><strong>Entropy indicator :</strong> a conservative estimate in bits and estimated possible combinations.</li>
+  <li><strong>Optional automatic copy :</strong> disabled by default; enable it in settings if needed.</li>
+</ul>
+
+<h3>Two modes for your needs</h3>
+<p>“Standard” lets you choose length, character categories, password preview and automatic copying.</p>
+
+<p>“Safer” applies additional protections:</p>
+<ul>
+  <li>Minimum: 24 characters, with the option to increase the length.</li>
+  <li>Uppercase and lowercase letters, numbers and symbols included.</li>
+  <li>No password preview or clipboard copying.</li>
+  <li>Direct filling only, in a secure context such as HTTPS.</li>
+  <li>Temporary script data cleared when the tab is hidden or you leave the page.</li>
+</ul>
+
+<p>Your “Standard” preferences are preserved when switching modes.</p>
+
+<h3>An interface that adapts to you</h3>
+<ul>
+  <li>Dark theme by default or a blue theme.</li>
+  <li>Settings organized in collapsible sections.</li>
+  <li>Floating bubble and field buttons can be hidden separately.</li>
+  <li>Language selection in settings, with 46 interface locales.</li>
+  <li>Generation and settings accessible through the userscript manager menu.</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+  <li>Install the script using a userscript manager. Recommendation: <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+  <li>Open settings from the floating bubble or manager menu, then choose your options.</li>
+  <li>Use a button beside a password field to fill it directly.</li>
+</ol>
+
+<h3>Privacy and limitations</h3>
+<p>Generation is local: the script makes no network requests and does not persistently store passwords. Only preferences are saved by the userscript manager. SigilPass is a generator, not a password vault.</p>
+
+<p>A password filled into a form is accessible to the receiving website. “Safer” reduces exposure in the interface and clipboard; it does not make a malicious website trustworthy.</p>
+
+<h3>Source code and support</h3>
+<p>View the <a href="https://github.com/DREwX-code/SigilPass">source code on GitHub</a> or <a href="https://github.com/DREwX-code/SigilPass/issues">report an issue</a>. Include your browser, userscript manager and reproduction steps, without sharing any password.</p>

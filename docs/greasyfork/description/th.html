@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> สร้างรหัสผ่านสุ่มในเบราว์เซอร์โดยตรง ปรับความยาวและอักขระ กรอกแบบฟอร์มในคลิกเดียว หรือใช้ “Safer” เพื่อกรอกโดยไม่แสดงหรือคัดลอก</p>
+
+<h3>รหัสผ่านพร้อมใช้</h3>
+<ul>
+  <li><strong>สร้างอย่างปลอดภัยทางการเข้ารหัส :</strong> ใช้ Web Crypto โดยไม่ย้อนกลับไปใช้ตัวสร้างสุ่มที่ไม่ปลอดภัย</li>
+  <li><strong>ปรับความยาวได้ :</strong> 12–64 ตัวอักษร เลือกตัวพิมพ์ใหญ่ ตัวเลข และสัญลักษณ์ได้</li>
+  <li><strong>กรอกโดยตรง :</strong> ปุ่มข้างช่องรหัสผ่าน รวมถึงช่องยืนยันที่ตรวจพบ</li>
+  <li><strong>ตัวบอกเอนโทรปี :</strong> ค่าประมาณแบบระมัดระวังในหน่วยบิตและจำนวนชุดค่าที่เป็นไปได้</li>
+  <li><strong>คัดลอกอัตโนมัติแบบเลือกได้ :</strong> ปิดโดยค่าเริ่มต้น เปิดในการตั้งค่าเมื่อต้องการ</li>
+</ul>
+
+<h3>สองโหมดตามการใช้งาน</h3>
+<p>“Standard” ให้เลือกความยาว ประเภทอักขระ การแสดงรหัสผ่าน และการคัดลอกอัตโนมัติ</p>
+
+<p>“Safer” เพิ่มการป้องกัน:</p>
+<ul>
+  <li>ขั้นต่ำ: 24 ตัวอักษร และเพิ่มความยาวได้</li>
+  <li>รวมตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก ตัวเลข และสัญลักษณ์</li>
+  <li>ไม่แสดงตัวอย่างรหัสผ่านหรือคัดลอกไปคลิปบอร์ด</li>
+  <li>กรอกโดยตรงเฉพาะในบริบทปลอดภัย เช่น HTTPS</li>
+  <li>ล้างข้อมูลชั่วคราวของสคริปต์เมื่อซ่อนแท็บหรือออกจากหน้า</li>
+</ul>
+
+<p>การตั้งค่า “Standard” จะคงอยู่เมื่อเปลี่ยนโหมด</p>
+
+<h3>อินเทอร์เฟซที่ปรับได้</h3>
+<ul>
+  <li>ธีมมืดเป็นค่าเริ่มต้น หรือธีมสีน้ำเงิน</li>
+  <li>การตั้งค่าแบ่งเป็นส่วนพับได้</li>
+  <li>ซ่อนปุ่มลอยและปุ่มข้างช่องแยกกันได้</li>
+  <li>เลือกได้ 46 ภาษาและรูปแบบภูมิภาค</li>
+  <li>สร้างรหัสผ่านและเข้าการตั้งค่าจากเมนูตัวจัดการสคริปต์</li>
+</ul>
+
+<h3>การติดตั้ง</h3>
+<ol>
+  <li>ติดตั้งผ่านตัวจัดการสคริปต์ผู้ใช้ คำแนะนำ: <a href="https://www.tampermonkey.net/">Tampermonkey</a></li>
+  <li>เปิดการตั้งค่าจากปุ่มลอยหรือเมนูตัวจัดการ แล้วเลือกตัวเลือก</li>
+  <li>ใช้ปุ่มข้างช่องรหัสผ่านเพื่อกรอกโดยตรง</li>
+</ol>
+
+<h3>ความเป็นส่วนตัวและข้อจำกัด</h3>
+<p>สร้างในเครื่อง: สคริปต์ไม่ส่งคำขอเครือข่ายและไม่เก็บรหัสผ่านถาวร ตัวจัดการบันทึกเฉพาะการตั้งค่า SigilPass เป็นตัวสร้าง ไม่ใช่คลังรหัสผ่าน</p>
+
+<p>เว็บไซต์ที่รับแบบฟอร์มอ่านรหัสผ่านที่กรอกได้ “Safer” ลดการเปิดเผยในอินเทอร์เฟซและคลิปบอร์ด แต่ไม่ทำให้เว็บอันตรายเชื่อถือได้</p>
+
+<h3>ซอร์สโค้ดและความช่วยเหลือ</h3>
+<p>ดู<a href="https://github.com/DREwX-code/SigilPass">ซอร์สโค้ดบน GitHub</a>หรือ<a href="https://github.com/DREwX-code/SigilPass/issues">รายงานปัญหา</a> ระบุเบราว์เซอร์ ตัวจัดการ และขั้นตอนทำซ้ำ โดยไม่เปิดเผยรหัสผ่าน</p>

@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> ब्राउजरमै अनियमित पासवर्ड बनाउँछ। लम्बाइ र अक्षर छान्नुहोस्, एक क्लिकमा फाराम भर्नुहोस् वा “Safer” बाट नदेखाई र प्रतिलिपि नगरी सीधै भर्नुहोस्।</p>
+
+<h3>प्रयोगका लागि तयार पासवर्ड</h3>
+<ul>
+  <li><strong>क्रिप्टोग्राफिक रूपमा सुरक्षित सिर्जना :</strong> Web Crypto, असुरक्षित अनियमित जनरेटरमा फर्किने विकल्पबिना।</li>
+  <li><strong>अनुकूल लम्बाइ :</strong> 12–64 अक्षर, ठूला अक्षर, अङ्क र चिह्न रोज्न सकिने।</li>
+  <li><strong>प्रत्यक्ष भर्ने सुविधा :</strong> पासवर्ड फिल्डछेउ बटन, पहिचान भएका पुष्टि फिल्डसहित।</li>
+  <li><strong>एन्ट्रोपी सूचक :</strong> बिट र सम्भावित संयोजनहरूको सावधानीपूर्ण अनुमान।</li>
+  <li><strong>ऐच्छिक स्वचालित प्रतिलिपि :</strong> पूर्वनिर्धारित रूपमा बन्द; चाहिँदा सेटिङबाट खोल्नुहोस्।</li>
+</ul>
+
+<h3>आवश्यकताअनुसार दुई मोड</h3>
+<p>“Standard” मा लम्बाइ, अक्षरका प्रकार, पासवर्ड प्रदर्शन र स्वचालित प्रतिलिपि छान्न सकिन्छ।</p>
+
+<p>“Safer” ले थप सुरक्षा लागू गर्छ:</p>
+<ul>
+  <li>न्यूनतम: 24 अक्षर; लम्बाइ बढाउन सकिन्छ।</li>
+  <li>ठूला र साना अक्षर, अङ्क र चिह्न समावेश।</li>
+  <li>पासवर्ड पूर्वावलोकन वा क्लिपबोर्ड प्रतिलिपि हुँदैन।</li>
+  <li>HTTPS जस्तो सुरक्षित सन्दर्भमा मात्र प्रत्यक्ष भर्ने।</li>
+  <li>ट्याब लुक्दा वा पृष्ठ छोड्दा स्क्रिप्टका अस्थायी डेटा सफा हुन्छन्।</li>
+</ul>
+
+<p>मोड परिवर्तन गर्दा “Standard” प्राथमिकता सुरक्षित रहन्छ।</p>
+
+<h3>तपाईँअनुकूल इन्टरफेस</h3>
+<ul>
+  <li>पूर्वनिर्धारित गाढा थिम वा नीलो थिम।</li>
+  <li>खुम्च्याउन सकिने खण्डमा सेटिङ।</li>
+  <li>तैरिने बटन र फिल्डका बटन छुट्टाछुट्टै लुकाउन सकिने।</li>
+  <li>सेटिङमा 46 भाषा र क्षेत्रीय रूप।</li>
+  <li>स्क्रिप्ट व्यवस्थापक मेनुबाट सिर्जना र सेटिङ।</li>
+</ul>
+
+<h3>स्थापना</h3>
+<ol>
+  <li>यूजरस्क्रिप्ट व्यवस्थापकबाट स्थापना गर्नुहोस्। सिफारिस: <a href="https://www.tampermonkey.net/">Tampermonkey</a>।</li>
+  <li>तैरिने बटन वा व्यवस्थापक मेनुबाट सेटिङ खोलेर विकल्प छान्नुहोस्।</li>
+  <li>पासवर्ड फिल्डछेउको बटनले सीधै भर्नुहोस्।</li>
+</ol>
+
+<h3>गोपनीयता र सीमाहरू</h3>
+<p>सिर्जना स्थानीय हुन्छ: स्क्रिप्टले नेटवर्क अनुरोध पठाउँदैन र पासवर्ड स्थायी रूपमा राख्दैन। व्यवस्थापकले प्राथमिकता मात्र राख्छ। SigilPass जनरेटर हो, पासवर्ड भण्डार होइन।</p>
+
+<p>फाराम लिने साइटले भरिएको पासवर्ड पढ्न सक्छ। “Safer” ले इन्टरफेस र क्लिपबोर्डमा खुलासा घटाउँछ; हानिकारक साइटलाई भरपर्दो बनाउँदैन।</p>
+
+<h3>स्रोत कोड र सहयोग</h3>
+<p><a href="https://github.com/DREwX-code/SigilPass">GitHub मा स्रोत कोड</a> हेर्नुहोस् वा <a href="https://github.com/DREwX-code/SigilPass/issues">समस्या बताउनुहोस्</a>। पासवर्ड नदिई ब्राउजर, व्यवस्थापक र दोहोर्‍याउने चरण बताउनुहोस्।</p>

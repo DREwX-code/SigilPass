@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong>直接在浏览器中生成随机密码。自定义长度和字符，一键填写表单，或启用“Safer”模式，在不显示、不复制密码的情况下直接填入。</p>
+
+<h3>随时可用的密码</h3>
+<ul>
+  <li><strong>密码学安全生成 :</strong> 使用Web Crypto，不会回退到不安全的随机生成器。</li>
+  <li><strong>自定义长度 :</strong> 12至64个字符，可选择大写字母、数字和符号。</li>
+  <li><strong>直接填入 :</strong> 在密码字段及检测到的确认字段旁提供按钮。</li>
+  <li><strong>熵指标 :</strong> 保守估计的比特数和可能组合数。</li>
+  <li><strong>可选自动复制 :</strong> 默认关闭，需要时可在设置中开启。</li>
+</ul>
+
+<h3>按需选择两种模式</h3>
+<p>“Standard”模式允许选择长度、字符类别、密码显示及自动复制。</p>
+
+<p>“Safer”模式提供额外保护：</p>
+<ul>
+  <li>最少：24个字符，可以继续增加长度。</li>
+  <li>包含大写字母、小写字母、数字和符号。</li>
+  <li>不预览密码，也不复制到剪贴板。</li>
+  <li>仅在HTTPS等安全上下文中直接填入。</li>
+  <li>标签页隐藏或离开页面时，清理脚本的临时数据。</li>
+</ul>
+
+<p>切换模式时保留“Standard”偏好设置。</p>
+
+<h3>适合你的界面</h3>
+<ul>
+  <li>默认深色主题或蓝色主题。</li>
+  <li>设置按可折叠章节组织。</li>
+  <li>悬浮按钮和字段按钮可分别隐藏。</li>
+  <li>在设置中选择46种语言及地区变体。</li>
+  <li>通过用户脚本管理器菜单访问生成和设置。</li>
+</ul>
+
+<h3>安装</h3>
+<ol>
+  <li>使用用户脚本管理器安装脚本。建议: <a href="https://www.tampermonkey.net/">Tampermonkey</a>。</li>
+  <li>通过悬浮按钮或管理器菜单打开设置，选择所需选项。</li>
+  <li>点击密码字段旁的按钮直接填入。</li>
+</ol>
+
+<h3>隐私与限制</h3>
+<p>密码在本地生成：脚本不发送网络请求，也不持久保存密码。管理器仅保存偏好设置。SigilPass是生成器，不是密码保险库。</p>
+
+<p>接收表单的网站可以读取填入的密码。“Safer”减少界面和剪贴板中的暴露，但不会让恶意网站变得可信。</p>
+
+<h3>源代码与支持</h3>
+<p>查看<a href="https://github.com/DREwX-code/SigilPass">GitHub上的源代码</a>或<a href="https://github.com/DREwX-code/SigilPass/issues">报告问题</a>。请提供浏览器、脚本管理器和复现步骤，不要分享密码。</p>

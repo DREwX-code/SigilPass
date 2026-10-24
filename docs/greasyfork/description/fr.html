@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> génère des mots de passe aléatoires directement dans votre navigateur. Ajustez leur longueur et leurs caractères, remplissez vos formulaires en un clic ou activez le mode “Safer” pour privilégier le remplissage direct sans affichage ni copie.</p>
+
+<h3>Un mot de passe prêt à l’emploi</h3>
+<ul>
+  <li><strong>Génération cryptographiquement sécurisée :</strong> génération avec Web Crypto, sans repli vers un générateur aléatoire non sécurisé.</li>
+  <li><strong>Longueur personnalisable :</strong> de 12 à 64 caractères, avec majuscules, chiffres et symboles au choix.</li>
+  <li><strong>Remplissage direct :</strong> boutons à côté des champs de mot de passe, avec prise en charge des champs de confirmation détectés.</li>
+  <li><strong>Indicateur d’entropie :</strong> estimation prudente en bits et estimation du nombre de combinaisons possibles.</li>
+  <li><strong>Copie automatique optionnelle :</strong> désactivée par défaut, à activer dans les paramètres si vous en avez besoin.</li>
+</ul>
+
+<h3>Deux modes, selon votre usage</h3>
+<p>“Standard” vous laisse choisir la longueur, les catégories de caractères, l’affichage du mot de passe et la copie automatique.</p>
+
+<p>“Safer” applique des protections supplémentaires :</p>
+<ul>
+  <li>Minimum : 24 caractères, avec possibilité d’augmenter la longueur.</li>
+  <li>Majuscules, minuscules, chiffres et symboles inclus.</li>
+  <li>Aucun aperçu du mot de passe et aucune copie dans le presse-papiers.</li>
+  <li>Remplissage direct uniquement, dans un contexte sécurisé, notamment HTTPS.</li>
+  <li>Nettoyage des données temporaires du script lorsque l’onglet devient masqué ou que vous quittez la page.</li>
+</ul>
+
+<p>Vos préférences “Standard” sont conservées lorsque vous changez de mode.</p>
+
+<h3>Une interface qui s’adapte à vous</h3>
+<ul>
+  <li>Thème sombre par défaut ou thème bleu.</li>
+  <li>Paramètres organisés en sections repliables.</li>
+  <li>Bulle flottante et boutons des champs masquables séparément.</li>
+  <li>Choix de la langue dans les paramètres, avec 46 locales d’interface.</li>
+  <li>Accès à la génération et aux paramètres depuis le menu du gestionnaire de scripts.</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+  <li>Installez le script avec un gestionnaire de scripts utilisateur. Recommandation : <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+  <li>Ouvrez les paramètres depuis la bulle flottante ou le menu du gestionnaire, puis choisissez vos options.</li>
+  <li>Utilisez un bouton à côté d’un champ de mot de passe pour le remplir directement.</li>
+</ol>
+
+<h3>Confidentialité et limites</h3>
+<p>La génération est locale : le script n’envoie aucune requête réseau et ne conserve aucun mot de passe dans un stockage persistant. Seules vos préférences sont enregistrées par le gestionnaire de scripts. SigilPass est un générateur, pas un coffre-fort de mots de passe.</p>
+
+<p>Un mot de passe rempli dans un formulaire est accessible au site qui reçoit ce formulaire. Le mode “Safer” réduit l’exposition dans l’interface et le presse-papiers ; il ne rend pas un site malveillant digne de confiance.</p>
+
+<h3>Code source et assistance</h3>
+<p>Consultez le <a href="https://github.com/DREwX-code/SigilPass">code source sur GitHub</a> ou <a href="https://github.com/DREwX-code/SigilPass/issues">signalez un problème</a>. Pour faciliter sa résolution, indiquez le navigateur, le gestionnaire de scripts et les étapes de reproduction, sans partager de mot de passe.</p>

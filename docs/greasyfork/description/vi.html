@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> tạo mật khẩu ngẫu nhiên ngay trong trình duyệt. Chỉnh độ dài và ký tự, điền biểu mẫu bằng một lần nhấp hoặc bật “Safer” để điền trực tiếp mà không hiển thị hay sao chép.</p>
+
+<h3>Mật khẩu sẵn sàng sử dụng</h3>
+<ul>
+  <li><strong>Tạo ngẫu nhiên an toàn về mật mã :</strong> dùng Web Crypto, không chuyển sang bộ tạo ngẫu nhiên kém an toàn.</li>
+  <li><strong>Độ dài tùy chỉnh :</strong> 12–64 ký tự, tùy chọn chữ hoa, số và ký hiệu.</li>
+  <li><strong>Điền trực tiếp :</strong> nút cạnh ô mật khẩu, kể cả ô xác nhận được phát hiện.</li>
+  <li><strong>Chỉ báo entropy :</strong> ước tính thận trọng bằng bit và số tổ hợp có thể .</li>
+  <li><strong>Tự động sao chép tùy chọn :</strong> mặc định tắt; bật trong cài đặt khi cần.</li>
+</ul>
+
+<h3>Hai chế độ theo nhu cầu</h3>
+<p>“Standard” cho phép chọn độ dài, loại ký tự, hiển thị mật khẩu và tự động sao chép.</p>
+
+<p>“Safer” áp dụng bảo vệ bổ sung:</p>
+<ul>
+  <li>Tối thiểu: 24 ký tự, có thể tăng độ dài.</li>
+  <li>Bao gồm chữ hoa, chữ thường, số và ký hiệu.</li>
+  <li>Không xem trước mật khẩu hay sao chép vào bộ nhớ tạm.</li>
+  <li>Chỉ điền trực tiếp trong ngữ cảnh an toàn như HTTPS.</li>
+  <li>Dọn dữ liệu tạm của script khi thẻ bị ẩn hoặc rời trang.</li>
+</ul>
+
+<p>Tùy chọn “Standard” được giữ lại khi chuyển chế độ.</p>
+
+<h3>Giao diện phù hợp với bạn</h3>
+<ul>
+  <li>Giao diện tối mặc định hoặc giao diện xanh.</li>
+  <li>Cài đặt trong các mục có thể thu gọn.</li>
+  <li>Ẩn riêng nút nổi và nút cạnh ô nhập.</li>
+  <li>Chọn trong 46 ngôn ngữ và biến thể khu vực.</li>
+  <li>Truy cập tạo mật khẩu và cài đặt từ trình quản lý script.</li>
+</ul>
+
+<h3>Cài đặt</h3>
+<ol>
+  <li>Cài script bằng trình quản lý script người dùng. Đề xuất: <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+  <li>Mở cài đặt từ nút nổi hoặc menu trình quản lý rồi chọn tùy chọn.</li>
+  <li>Dùng nút cạnh ô mật khẩu để điền trực tiếp.</li>
+</ol>
+
+<h3>Quyền riêng tư và giới hạn</h3>
+<p>Mật khẩu được tạo cục bộ: script không gửi yêu cầu mạng hay lưu mật khẩu lâu dài. Trình quản lý chỉ lưu tùy chọn. SigilPass là công cụ tạo, không phải kho mật khẩu.</p>
+
+<p>Trang nhận biểu mẫu có thể đọc mật khẩu được điền. “Safer” giảm lộ thông tin trong giao diện và bộ nhớ tạm, không làm trang độc hại trở nên đáng tin.</p>
+
+<h3>Mã nguồn và hỗ trợ</h3>
+<p>Xem <a href="https://github.com/DREwX-code/SigilPass">mã nguồn trên GitHub</a> hoặc <a href="https://github.com/DREwX-code/SigilPass/issues">báo lỗi</a>. Nêu trình duyệt, trình quản lý và bước tái hiện mà không chia sẻ mật khẩu.</p>

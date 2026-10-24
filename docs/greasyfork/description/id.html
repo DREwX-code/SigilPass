@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong> membuat kata sandi acak langsung di peramban. Atur panjang dan karakter, isi formulir sekali klik, atau gunakan “Safer” untuk pengisian tanpa tampilan dan penyalinan.</p>
+
+<h3>Kata sandi siap digunakan</h3>
+<ul>
+  <li><strong>Pembuatan aman secara kriptografis :</strong> Web Crypto tanpa beralih ke pembangkit acak tidak aman.</li>
+  <li><strong>Panjang dapat diatur :</strong> 12–64 karakter dengan pilihan huruf besar, angka dan simbol.</li>
+  <li><strong>Pengisian langsung :</strong> tombol di samping kolom kata sandi, termasuk kolom konfirmasi yang terdeteksi.</li>
+  <li><strong>Indikator entropi :</strong> perkiraan konservatif dalam bit dan jumlah kombinasi.</li>
+  <li><strong>Salin otomatis opsional :</strong> mati secara bawaan; aktifkan di pengaturan jika perlu.</li>
+</ul>
+
+<h3>Dua mode sesuai kebutuhan</h3>
+<p>“Standard” memungkinkan pemilihan panjang, jenis karakter, tampilan kata sandi dan salin otomatis.</p>
+
+<p>“Safer” menerapkan perlindungan tambahan:</p>
+<ul>
+  <li>Minimum: 24 karakter, panjang dapat ditambah.</li>
+  <li>Termasuk huruf besar, huruf kecil, angka dan simbol.</li>
+  <li>Tanpa pratinjau kata sandi atau penyalinan ke papan klip.</li>
+  <li>Hanya pengisian langsung dalam konteks aman seperti HTTPS.</li>
+  <li>Pembersihan data sementara script saat tab disembunyikan atau halaman ditinggalkan.</li>
+</ul>
+
+<p>Preferensi “Standard” tetap tersimpan saat berganti mode.</p>
+
+<h3>Antarmuka yang menyesuaikan</h3>
+<ul>
+  <li>Tema gelap bawaan atau tema biru.</li>
+  <li>Pengaturan dalam bagian yang dapat dilipat.</li>
+  <li>Tombol mengambang dan tombol kolom dapat disembunyikan terpisah.</li>
+  <li>Pilihan 46 bahasa dan variasi wilayah.</li>
+  <li>Pembuatan dan pengaturan dari menu pengelola script.</li>
+</ul>
+
+<h3>Instalasi</h3>
+<ol>
+  <li>Pasang script dengan pengelola userscript. Rekomendasi: <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+  <li>Buka pengaturan dari tombol mengambang atau menu pengelola lalu pilih opsi.</li>
+  <li>Gunakan tombol di samping kolom kata sandi untuk mengisi langsung.</li>
+</ol>
+
+<h3>Privasi dan batasan</h3>
+<p>Pembuatan bersifat lokal: script tidak mengirim permintaan jaringan atau menyimpan kata sandi secara permanen. Pengelola hanya menyimpan preferensi. SigilPass adalah generator, bukan brankas kata sandi.</p>
+
+<p>Situs penerima formulir dapat membaca kata sandi yang diisikan. “Safer” mengurangi paparan di antarmuka dan papan klip; tidak menjadikan situs berbahaya tepercaya.</p>
+
+<h3>Kode sumber dan dukungan</h3>
+<p>Lihat <a href="https://github.com/DREwX-code/SigilPass">kode sumber di GitHub</a> atau <a href="https://github.com/DREwX-code/SigilPass/issues">laporkan masalah</a>. Sertakan peramban, pengelola dan langkah reproduksi tanpa membagikan kata sandi.</p>

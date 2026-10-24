@@ -1,0 +1,51 @@
+<center><h1>SigilPass</h1></center>
+<center><a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-SigilPass-24292F?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/issues"><img alt="GitHub issues" src="https://img.shields.io/badge/Issues-Open-4C7FFF?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass"><img alt="GitHub stars" src="https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&logoColor=white"></a> <a href="https://github.com/DREwX-code/SigilPass/blob/main/LICENSE"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-2EA043?style=for-the-badge&logo=apache&logoColor=white"></a></center>
+
+<p><strong>SigilPass</strong>は、ブラウザー内でランダムなパスワードを生成します。長さや文字を調整し、ワンクリックでフォームに入力できます。“Safer”なら表示もコピーもせずに直接入力できます。</p>
+
+<h3>すぐ使えるパスワード</h3>
+<ul>
+  <li><strong>暗号学的に安全な生成 :</strong> Web Cryptoを使用し、安全でない乱数生成には切り替えません。</li>
+  <li><strong>長さを調整可能 :</strong> 12～64文字。大文字、数字、記号を選択できます。</li>
+  <li><strong>直接入力 :</strong> パスワード欄と検出された確認欄の横に入力ボタンを配置します。</li>
+  <li><strong>エントロピー表示 :</strong> ビット数と可能な組み合わせ数の保守的な推定。</li>
+  <li><strong>任意の自動コピー :</strong> 初期状態は無効です。必要に応じて設定から有効にできます。</li>
+</ul>
+
+<h3>用途に応じた2つのモード</h3>
+<p>“Standard”では長さ、文字の種類、パスワードの表示、自動コピーを選べます。</p>
+
+<p>“Safer”では追加の保護が適用されます。</p>
+<ul>
+  <li>最小：24文字。さらに長くすることもできます。</li>
+  <li>大文字、小文字、数字、記号をすべて含めます。</li>
+  <li>パスワードのプレビューもクリップボードへのコピーもしません。</li>
+  <li>HTTPSなどの安全なコンテキストでの直接入力のみ。</li>
+  <li>タブが非表示になったときやページを離れたときに、スクリプトの一時データを消去します。</li>
+</ul>
+
+<p>モードを切り替えても“Standard”の設定は保持されます。</p>
+
+<h3>使いやすく調整できる画面</h3>
+<ul>
+  <li>初期設定はダークテーマまたは青いテーマ。</li>
+  <li>設定は折りたたみ可能なセクションに整理。</li>
+  <li>フローティングボタンと入力欄のボタンは個別に非表示にできます。</li>
+  <li>設定から46の言語・地域別バリエーションを選択。</li>
+  <li>スクリプト管理ツールのメニューから生成と設定にアクセスできます。</li>
+</ul>
+
+<h3>インストール</h3>
+<ol>
+  <li>ユーザースクリプト管理ツールでインストールしてください。おすすめ: <a href="https://www.tampermonkey.net/">Tampermonkey</a>。</li>
+  <li>フローティングボタンまたは管理ツールのメニューから設定を開き、オプションを選びます。</li>
+  <li>パスワード欄の横のボタンを使って直接入力します。</li>
+</ol>
+
+<h3>プライバシーと制限</h3>
+<p>生成はローカルで行われます。スクリプトはネットワーク要求を送信せず、パスワードを永続保存しません。管理ツールに保存するのは設定だけです。SigilPassは生成ツールであり、パスワード保管庫ではありません。</p>
+
+<p>フォームに入力したパスワードは、そのサイトから読み取れます。“Safer”は画面とクリップボードでの露出を減らしますが、悪意あるサイトを安全にはしません。</p>
+
+<h3>ソースコードとサポート</h3>
+<p><a href="https://github.com/DREwX-code/SigilPass">GitHubのソースコード</a>を参照するか、<a href="https://github.com/DREwX-code/SigilPass/issues">問題を報告</a>してください。パスワードを共有せず、ブラウザー、管理ツール、再現手順を記載してください。</p>
