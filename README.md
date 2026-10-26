@@ -4,9 +4,9 @@
 
 **Secure, local and customizable password generation directly in your browser.**
 
-[![GreasyFork](https://img.shields.io/badge/GreasyFork-SigilPass-960000?style=for-the-badge&logo=greasyfork&logoColor=white)](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator)
-[![GreasyFork installs](https://img.shields.io/greasyfork/dt/541200?style=for-the-badge&label=Installs&color=960000)](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator)
-[![GreasyFork version](https://img.shields.io/greasyfork/v/541200?style=for-the-badge&label=Version&color=3b82f6)](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator/versions)
+[![GreasyFork](https://img.shields.io/badge/GreasyFork-SigilPass-960000?style=for-the-badge&logo=greasyfork&logoColor=white)](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator)
+[![GreasyFork installs](https://img.shields.io/greasyfork/dt/541200?style=for-the-badge&label=Installs&color=960000)](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator)
+[![GreasyFork version](https://img.shields.io/greasyfork/v/541200?style=for-the-badge&label=Version&color=3b82f6)](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator/versions)
 [![GitHub Stars](https://img.shields.io/github/stars/DREwX-code/SigilPass?style=for-the-badge&logo=github&color=FFD700)](https://github.com/DREwX-code/SigilPass/stargazers)
 [![License](https://img.shields.io/github/license/DREwX-code/SigilPass?style=for-the-badge&color=64748b)](./LICENSE)
 
@@ -14,7 +14,7 @@
 
 <br>
 
-**[SigilPass](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator)** is a lightweight userscript that generates cryptographically secure random passwords directly in your browser.
+**[SigilPass](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator)** is a lightweight userscript that generates cryptographically secure random passwords directly in your browser.
 
 Customize password length and character categories, generate passwords instantly, or use **Safer mode** for direct filling without displaying or copying the generated password.
 
@@ -128,11 +128,11 @@ SigilPass includes translations for **46 locales** and allows instant language s
 
 ## Installation
 
-[![Install SigilPass](https://img.shields.io/badge/Install-SigilPass-960000?style=for-the-badge&logo=greasyfork&logoColor=white)](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator)
+[![Install SigilPass](https://img.shields.io/badge/Install-SigilPass-960000?style=for-the-badge&logo=greasyfork&logoColor=white)](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator)
 [![View Source](https://img.shields.io/badge/View-Source%20Code-181717?style=for-the-badge&logo=github&logoColor=white)](./src/sigilpass.user.js)
 
 1. Install a userscript manager such as **[Tampermonkey](https://www.tampermonkey.net/)**.
-2. Install **SigilPass** from [Greasy Fork](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator).
+2. Install **SigilPass** from [Greasy Fork](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator).
 3. Open any supported website.
 4. Generate a password from the floating button or directly from a password field.
 
@@ -159,7 +159,7 @@ A password inserted into a website can still be accessed by that website. Safer 
 
 Bug reports, suggestions and contributions are welcome.
 
-- [Greasy Fork Feedback](https://greasyfork.org/fr/scripts/541200-sigilpass-robust-random-password-generator/feedback)
+- [Greasy Fork Feedback](https://greasyfork.org/scripts/541200-sigilpass-robust-random-password-generator/feedback)
 - [GitHub Issues](https://github.com/DREwX-code/SigilPass/issues)
 
 When reporting a bug, include your browser, userscript manager and clear reproduction steps.
