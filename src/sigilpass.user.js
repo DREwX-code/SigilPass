@@ -115,14 +115,16 @@
 // @description:mt Ġeneratur ta' passwords robusti u każwali, ħafif u disponibbli fuq kull sit. Personalizzazzjoni avvanzata (tul, simboli, numri, ittri kbar). Kopja immedjata fakultattiva. Interfaċċa multilingwi intelliġenti.
 
 // @namespace    https://github.com/DREwX-code/SigilPass
-// @version      1.1.0
+// @version      1.1.1
 // @author       Dℝ∃wX
 // @copyright    2025-2026 DℝᴇwX
 // @license      Apache-2.0
+// @icon         https://raw.githubusercontent.com/DREwX-code/SigilPass/main/assets/icon/sigilpass-logo.png
 // @match        *://*/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
 // @grant        GM_setClipboard
 // @noframes
 
@@ -153,16 +155,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-(function () {
+(function initializeSigilPass() {
     'use strict';
+
+    if (!document.body) {
+        const bodyObserver = new MutationObserver(() => {
+            if (!document.body) return;
+            bodyObserver.disconnect();
+            initializeSigilPass();
+        });
+        bodyObserver.observe(document, { childList: true, subtree: true });
+        return;
+    }
+
+    const CLOSE_SYMBOL = '✕';
 
     const translations = {
         en: {
+            fillUnavailable: "Select a password field.",
             entropyLabel: "Entropy",
             entropyExplanation: "SigilPass estimate: {count} possible combinations.",
             standardDescription: "Generate, reveal or optionally copy a password.",
             saferDescription: "Safer mode: Select a password field, then generate to fill it.",
-            insecureContext: "Safer: filling requires a secure context (HTTPS).",
+            insecureContext: "Filling requires a secure context (HTTPS).",
             copyFailed: "Copy blocked. Password ready below.",
             generate: 'Generate',
             generateFull: 'Generate password',
@@ -192,14 +207,14 @@ limitations under the License.
             securitySafer: 'Safer',
             copyOnGenerate: 'Automatic copy',
             secureRandomUnavailable: 'Secure random generation is unavailable. No password was created.',
-            close: '✕'
         },
         fr: {
+            fillUnavailable: "Sélectionnez un champ de mot de passe.",
             entropyLabel: "Entropie",
             entropyExplanation: "Estimation SigilPass : {count} combinaisons possibles.",
             standardDescription: "Générer, afficher ou copier un mot de passe selon vos réglages.",
             saferDescription: "Safer mode : Sélectionnez un champ mot de passe, puis générez pour le remplir.",
-            insecureContext: "Safer : le remplissage nécessite un contexte sécurisé (HTTPS).",
+            insecureContext: "Le remplissage nécessite un contexte sécurisé (HTTPS).",
             copyFailed: "Copie bloquée. Le mot de passe est disponible ci-dessous.",
             generate: 'Générer',
             generateFull: 'Générer un mot de passe',
@@ -229,14 +244,14 @@ limitations under the License.
             securitySafer: 'Safer',
             copyOnGenerate: 'Copie automatique',
             secureRandomUnavailable: 'La génération aléatoire sécurisée est indisponible. Aucun mot de passe n’a été créé.',
-            close: '✕'
         },
         es: {
+            fillUnavailable: "Selecciona un campo de contraseña.",
             entropyLabel: "Entropía",
             entropyExplanation: "Estimación de SigilPass: {count} combinaciones posibles.",
             standardDescription: "Genera, muestra o copia una contraseña según tus ajustes.",
             saferDescription: "Modo Safer: Selecciona un campo de contraseña y genera para rellenarlo.",
-            insecureContext: "Safer: el relleno requiere un contexto seguro (HTTPS).",
+            insecureContext: "El relleno requiere un contexto seguro (HTTPS).",
             sectionGeneral: "General",
             showInputButtons: "Botones de contraseña",
             generated: "Contraseña generada",
@@ -266,14 +281,14 @@ limitations under the License.
             reveal: 'Mostrar contraseña',
             hide: 'Ocultar contraseña',
             fill: 'Generar y completar la contraseña',
-            close: '✕'
         },
         de: {
+            fillUnavailable: "Wählen Sie ein Passwortfeld.",
             entropyLabel: "Entropie",
             entropyExplanation: "SigilPass-Schätzung: {count} mögliche Kombinationen.",
             standardDescription: "Passwörter nach Ihren Einstellungen generieren, anzeigen oder kopieren.",
             saferDescription: "Safer-Modus: Wählen Sie ein Passwortfeld und generieren Sie ein Passwort, um es auszufüllen.",
-            insecureContext: "Safer: Ausfüllen erfordert einen sicheren Kontext (HTTPS).",
+            insecureContext: "Ausfüllen erfordert einen sicheren Kontext (HTTPS).",
             sectionGeneral: "Allgemein",
             showInputButtons: "Passwort-Schaltflächen",
             generated: "Passwort generiert",
@@ -303,14 +318,14 @@ limitations under the License.
             reveal: 'Passwort anzeigen',
             hide: 'Passwort verbergen',
             fill: 'Passwort generieren und ausfüllen',
-            close: '✕'
         },
         it: {
+            fillUnavailable: "Seleziona un campo password.",
             entropyLabel: "Entropia",
             entropyExplanation: "Stima SigilPass: {count} combinazioni possibili.",
             standardDescription: "Genera, mostra o copia una password secondo le impostazioni.",
             saferDescription: "Modalità Safer: Seleziona un campo password e genera per compilarlo.",
-            insecureContext: "Safer: la compilazione richiede un contesto sicuro (HTTPS).",
+            insecureContext: "La compilazione richiede un contesto sicuro (HTTPS).",
             sectionGeneral: "Generale",
             showInputButtons: "Pulsanti password",
             generated: "Password generata",
@@ -340,14 +355,14 @@ limitations under the License.
             reveal: 'Mostra password',
             hide: 'Nascondi password',
             fill: 'Genera e compila la password',
-            close: '✕'
         },
         pt: {
+            fillUnavailable: "Selecione um campo de senha.",
             entropyLabel: "Entropia",
             entropyExplanation: "Estimativa SigilPass: {count} combinações possíveis.",
             standardDescription: "Gere, exiba ou copie uma senha conforme as suas opções.",
             saferDescription: "Modo Safer: Selecione um campo de senha e gere para preenchê-lo.",
-            insecureContext: "Safer: o preenchimento requer um contexto seguro (HTTPS).",
+            insecureContext: "O preenchimento requer um contexto seguro (HTTPS).",
             sectionGeneral: "Geral",
             showInputButtons: "Botões de senha",
             generated: "Senha gerada",
@@ -377,14 +392,14 @@ limitations under the License.
             reveal: 'Mostrar senha',
             hide: 'Ocultar senha',
             fill: 'Gerar e preencher senha',
-            close: '✕'
         },
         nl: {
+            fillUnavailable: "Selecteer een wachtwoordveld.",
             entropyLabel: "Entropie",
             entropyExplanation: "SigilPass-schatting: {count} mogelijke combinaties.",
             standardDescription: "Genereer, toon of kopieer een wachtwoord volgens uw instellingen.",
             saferDescription: "Safer-modus: Selecteer een wachtwoordveld en genereer om het in te vullen.",
-            insecureContext: "Safer: invullen vereist een beveiligde context (HTTPS).",
+            insecureContext: "Invullen vereist een beveiligde context (HTTPS).",
             sectionGeneral: "Algemeen",
             showInputButtons: "Wachtwoordknoppen",
             generated: "Wachtwoord gegenereerd",
@@ -414,14 +429,14 @@ limitations under the License.
             reveal: 'Wachtwoord tonen',
             hide: 'Wachtwoord verbergen',
             fill: 'Wachtwoord genereren en invullen',
-            close: '✕'
         },
         ru: {
+            fillUnavailable: "Выберите поле пароля.",
             entropyLabel: "Энтропия",
             entropyExplanation: "Оценка SigilPass: {count} возможных комбинаций.",
             standardDescription: "Создание, показ или копирование пароля согласно настройкам.",
             saferDescription: "Режим Safer: Выберите поле пароля и нажмите генерацию для заполнения.",
-            insecureContext: "Safer: заполнение требует безопасного контекста (HTTPS).",
+            insecureContext: "Заполнение требует безопасного контекста (HTTPS).",
             sectionGeneral: "Общие",
             showInputButtons: "Кнопки пароля",
             generated: "Пароль создан",
@@ -451,14 +466,14 @@ limitations under the License.
             reveal: 'Показать пароль',
             hide: 'Скрыть пароль',
             fill: 'Создать и заполнить пароль',
-            close: '✕'
         },
         ja: {
+            fillUnavailable: "パスワード欄を選択してください。",
             entropyLabel: "エントロピー",
             entropyExplanation: "SigilPass推定：{count}通りの組み合わせ。",
             standardDescription: "設定に応じてパスワードを生成、表示、コピーします。",
             saferDescription: "Saferモード：パスワード欄を選択し、生成して入力してください。",
-            insecureContext: "Safer：入力には安全なコンテキスト（HTTPS）が必要です。",
+            insecureContext: "入力には安全なコンテキスト（HTTPS）が必要です。",
             sectionGeneral: "一般",
             showInputButtons: "パスワードボタン",
             generated: "パスワードを生成しました",
@@ -488,14 +503,14 @@ limitations under the License.
             reveal: 'パスワードを表示',
             hide: 'パスワードを非表示',
             fill: 'パスワードを生成して入力',
-            close: '✕'
         },
         ko: {
+            fillUnavailable: "비밀번호 입력란을 선택하세요.",
             entropyLabel: "엔트로피",
             entropyExplanation: "SigilPass 추정: 가능한 조합 {count}개.",
             standardDescription: "설정에 따라 비밀번호를 생성하거나 표시하거나 복사합니다.",
             saferDescription: "Safer 모드: 비밀번호 입력란을 선택한 뒤 생성하여 채우세요.",
-            insecureContext: "Safer: 입력하려면 보안 컨텍스트(HTTPS)가 필요합니다.",
+            insecureContext: "입력하려면 보안 컨텍스트(HTTPS)가 필요합니다.",
             sectionGeneral: "일반",
             showInputButtons: "비밀번호 버튼",
             generated: "비밀번호가 생성되었습니다",
@@ -525,14 +540,14 @@ limitations under the License.
             reveal: '비밀번호 표시',
             hide: '비밀번호 숨기기',
             fill: '비밀번호 생성 및 입력',
-            close: '✕'
         },
         zh: {
+            fillUnavailable: "请选择密码字段。",
             entropyLabel: "熵",
             entropyExplanation: "SigilPass估计：{count}种可能的组合。",
             standardDescription: "根据设置生成、显示或复制密码。",
             saferDescription: "Safer模式：选择密码字段，然后生成并填入。",
-            insecureContext: "Safer：填入需要安全上下文（HTTPS）。",
+            insecureContext: "填入需要安全上下文（HTTPS）。",
             sectionGeneral: "常规",
             showInputButtons: "密码按钮",
             generated: "密码已生成",
@@ -562,14 +577,14 @@ limitations under the License.
             reveal: '显示密码',
             hide: '隐藏密码',
             fill: '生成并填写密码',
-            close: '✕'
         },
         ar: {
+            fillUnavailable: "حدد حقل كلمة المرور.",
             entropyLabel: "الإنتروبيا",
             entropyExplanation: "تقدير SigilPass: {count} تركيبة ممكنة.",
             standardDescription: "إنشاء كلمة مرور أو عرضها أو نسخها وفق الإعدادات.",
             saferDescription: "وضع Safer: حدد حقل كلمة مرور ثم أنشئها لملئه.",
-            insecureContext: "Safer: يتطلب الملء سياقًا آمنًا (HTTPS).",
+            insecureContext: "يتطلب الملء سياقًا آمنًا (HTTPS).",
             sectionGeneral: "عام",
             showInputButtons: "أزرار كلمة المرور",
             generated: "تم إنشاء كلمة المرور",
@@ -599,14 +614,14 @@ limitations under the License.
             reveal: 'إظهار كلمة المرور',
             hide: 'إخفاء كلمة المرور',
             fill: 'إنشاء وملء كلمة المرور',
-            close: '✕'
         },
         pl: {
+            fillUnavailable: "Wybierz pole hasła.",
             entropyLabel: "Entropia",
             entropyExplanation: "Szacunek SigilPass: {count} możliwych kombinacji.",
             standardDescription: "Generuj, wyświetlaj lub kopiuj hasło zgodnie z ustawieniami.",
             saferDescription: "Tryb Safer: Wybierz pole hasła i wygeneruj, aby je wypełnić.",
-            insecureContext: "Safer: wypełnianie wymaga bezpiecznego kontekstu (HTTPS).",
+            insecureContext: "Wypełnianie wymaga bezpiecznego kontekstu (HTTPS).",
             sectionGeneral: "Ogólne",
             showInputButtons: "Przyciski hasła",
             generated: "Hasło wygenerowane",
@@ -636,14 +651,14 @@ limitations under the License.
             reveal: 'Pokaż hasło',
             hide: 'Ukryj hasło',
             fill: 'Wygeneruj i wypełnij hasło',
-            close: '✕'
         },
         tr: {
+            fillUnavailable: "Bir parola alanı seçin.",
             entropyLabel: "Entropi",
             entropyExplanation: "SigilPass tahmini: {count} olası kombinasyon.",
             standardDescription: "Ayarlarınıza göre parola oluşturun, gösterin veya kopyalayın.",
             saferDescription: "Safer modu: Parola alanını seçin ve doldurmak için oluşturun.",
-            insecureContext: "Safer: doldurma için güvenli bağlam (HTTPS) gerekir.",
+            insecureContext: "Doldurma için güvenli bağlam (HTTPS) gerekir.",
             sectionGeneral: "Genel",
             showInputButtons: "Parola düğmeleri",
             generated: "Parola oluşturuldu",
@@ -673,14 +688,14 @@ limitations under the License.
             reveal: 'Şifreyi göster',
             hide: 'Şifreyi gizle',
             fill: 'Şifre oluştur ve doldur',
-            close: '✕'
         },
         sv: {
+            fillUnavailable: "Välj ett lösenordsfält.",
             entropyLabel: "Entropi",
             entropyExplanation: "SigilPass-uppskattning: {count} möjliga kombinationer.",
             standardDescription: "Generera, visa eller kopiera lösenord enligt dina inställningar.",
             saferDescription: "Safer-läge: Välj ett lösenordsfält och generera för att fylla i det.",
-            insecureContext: "Safer: ifyllning kräver en säker kontext (HTTPS).",
+            insecureContext: "Ifyllning kräver en säker kontext (HTTPS).",
             sectionGeneral: "Allmänt",
             showInputButtons: "Lösenordsknappar",
             generated: "Lösenord genererat",
@@ -710,14 +725,14 @@ limitations under the License.
             reveal: 'Visa lösenord',
             hide: 'Dölj lösenord',
             fill: 'Generera och fyll i lösenord',
-            close: '✕'
         },
         ro: {
+            fillUnavailable: "Selectează un câmp de parolă.",
             entropyLabel: "Entropie",
             entropyExplanation: "Estimare SigilPass: {count} combinații posibile.",
             standardDescription: "Generează, afișează sau copiază o parolă conform setărilor.",
             saferDescription: "Mod Safer: Selectează un câmp de parolă și generează pentru a-l completa.",
-            insecureContext: "Safer: completarea necesită un context securizat (HTTPS).",
+            insecureContext: "Completarea necesită un context securizat (HTTPS).",
             sectionGeneral: "General",
             showInputButtons: "Butoane pentru parolă",
             generated: "Parolă generată",
@@ -747,14 +762,14 @@ limitations under the License.
             reveal: 'Afișează parola',
             hide: 'Ascunde parola',
             fill: 'Generează și completează parola',
-            close: '✕'
         },
         vi: {
+            fillUnavailable: "Chọn ô mật khẩu.",
             entropyLabel: "Entropy",
             entropyExplanation: "Ước tính SigilPass: {count} tổ hợp có thể.",
             standardDescription: "Tạo, hiển thị hoặc sao chép mật khẩu theo cài đặt.",
             saferDescription: "Chế độ Safer: Chọn ô mật khẩu rồi tạo để điền.",
-            insecureContext: "Safer: việc điền yêu cầu ngữ cảnh bảo mật (HTTPS).",
+            insecureContext: "Việc điền yêu cầu ngữ cảnh bảo mật (HTTPS).",
             sectionGeneral: "Chung",
             showInputButtons: "Nút mật khẩu",
             generated: "Đã tạo mật khẩu",
@@ -784,14 +799,14 @@ limitations under the License.
             reveal: 'Hiển thị mật khẩu',
             hide: 'Ẩn mật khẩu',
             fill: 'Tạo và điền mật khẩu',
-            close: '✕'
         },
         hi: {
+            fillUnavailable: "पासवर्ड फ़ील्ड चुनें।",
             entropyLabel: "एंट्रॉपी",
             entropyExplanation: "SigilPass अनुमान: {count} संभावित संयोजन।",
             standardDescription: "सेटिंग के अनुसार पासवर्ड बनाएँ, दिखाएँ या कॉपी करें।",
             saferDescription: "Safer मोड: पासवर्ड फ़ील्ड चुनें और उसे भरने के लिए जनरेट करें।",
-            insecureContext: "Safer: भरने के लिए सुरक्षित संदर्भ (HTTPS) आवश्यक है।",
+            insecureContext: "भरने के लिए सुरक्षित संदर्भ (HTTPS) आवश्यक है।",
             sectionGeneral: "सामान्य",
             showInputButtons: "पासवर्ड बटन",
             generated: "पासवर्ड बनाया गया",
@@ -821,14 +836,14 @@ limitations under the License.
             reveal: 'पासवर्ड दिखाएँ',
             hide: 'पासवर्ड छिपाएँ',
             fill: 'पासवर्ड जनरेट करें और भरें',
-            close: '✕'
         },
         th: {
+            fillUnavailable: "เลือกช่องรหัสผ่าน",
             entropyLabel: "เอนโทรปี",
             entropyExplanation: "ค่าประมาณ SigilPass: {count} ชุดค่าที่เป็นไปได้",
             standardDescription: "สร้าง แสดง หรือคัดลอกรหัสผ่านตามการตั้งค่า",
             saferDescription: "โหมด Safer: เลือกช่องรหัสผ่านแล้วสร้างเพื่อกรอก",
-            insecureContext: "Safer: การกรอกต้องใช้บริบทที่ปลอดภัย (HTTPS)",
+            insecureContext: "การกรอกต้องใช้บริบทที่ปลอดภัย (HTTPS)",
             sectionGeneral: "ทั่วไป",
             showInputButtons: "ปุ่มรหัสผ่าน",
             generated: "สร้างรหัสผ่านแล้ว",
@@ -858,14 +873,14 @@ limitations under the License.
             reveal: 'แสดงรหัสผ่าน',
             hide: 'ซ่อนรหัสผ่าน',
             fill: 'สร้างและกรอกรหัสผ่าน',
-            close: '✕'
         },
         zh_HK: {
+            fillUnavailable: "請選取密碼欄位。",
             entropyLabel: "熵",
             entropyExplanation: "SigilPass估算：{count}種可能組合。",
             standardDescription: "按設定產生、顯示或複製密碼。",
             saferDescription: "Safer模式：選取密碼欄位，再產生並填入。",
-            insecureContext: "Safer：填入需要安全環境（HTTPS）。",
+            insecureContext: "填入需要安全環境（HTTPS）。",
             sectionGeneral: "一般",
             showInputButtons: "密碼按鈕",
             generated: "密碼已產生",
@@ -895,14 +910,14 @@ limitations under the License.
             reveal: '顯示密碼',
             hide: '隱藏密碼',
             fill: '產生並填入密碼',
-            close: '✕'
         },
         zh_TW: {
+            fillUnavailable: "請選取密碼欄位。",
             entropyLabel: "熵",
             entropyExplanation: "SigilPass估算：{count}種可能組合。",
             standardDescription: "依設定產生、顯示或複製密碼。",
             saferDescription: "Safer模式：選取密碼欄位，再產生並填入。",
-            insecureContext: "Safer：填入需要安全環境（HTTPS）。",
+            insecureContext: "填入需要安全環境（HTTPS）。",
             sectionGeneral: "一般",
             showInputButtons: "密碼按鈕",
             generated: "密碼已產生",
@@ -932,14 +947,14 @@ limitations under the License.
             reveal: '顯示密碼',
             hide: '隱藏密碼',
             fill: '產生並填入密碼',
-            close: '✕'
         },
         ms: {
+            fillUnavailable: "Pilih medan kata laluan.",
             entropyLabel: "Entropi",
             entropyExplanation: "Anggaran SigilPass: {count} gabungan yang mungkin.",
             standardDescription: "Jana, paparkan atau salin kata laluan mengikut tetapan.",
             saferDescription: "Mod Safer: Pilih medan kata laluan dan jana untuk mengisinya.",
-            insecureContext: "Safer: pengisian memerlukan konteks selamat (HTTPS).",
+            insecureContext: "Pengisian memerlukan konteks selamat (HTTPS).",
             sectionGeneral: "Umum",
             showInputButtons: "Butang kata laluan",
             generated: "Kata laluan dijana",
@@ -969,14 +984,14 @@ limitations under the License.
             reveal: 'Tunjukkan kata laluan',
             hide: 'Sembunyikan kata laluan',
             fill: 'Jana dan isi kata laluan',
-            close: '✕'
         },
         id: {
+            fillUnavailable: "Pilih kolom kata sandi.",
             entropyLabel: "Entropi",
             entropyExplanation: "Perkiraan SigilPass: {count} kombinasi yang mungkin.",
             standardDescription: "Buat, tampilkan atau salin kata sandi sesuai pengaturan.",
             saferDescription: "Mode Safer: Pilih kolom kata sandi lalu buat untuk mengisinya.",
-            insecureContext: "Safer: pengisian memerlukan konteks aman (HTTPS).",
+            insecureContext: "Pengisian memerlukan konteks aman (HTTPS).",
             sectionGeneral: "Umum",
             showInputButtons: "Tombol kata sandi",
             generated: "Kata sandi dibuat",
@@ -1006,14 +1021,14 @@ limitations under the License.
             reveal: 'Tampilkan kata sandi',
             hide: 'Sembunyikan kata sandi',
             fill: 'Buat dan isi kata sandi',
-            close: '✕'
         },
         bn: {
+            fillUnavailable: "পাসওয়ার্ডের ঘর বেছে নিন।",
             entropyLabel: "এনট্রপি",
             entropyExplanation: "SigilPass অনুমান: {count} সম্ভাব্য সমন্বয়।",
             standardDescription: "সেটিং অনুযায়ী পাসওয়ার্ড তৈরি, প্রদর্শন বা কপি করুন।",
             saferDescription: "Safer মোড: পাসওয়ার্ডের ঘর বেছে নিয়ে পূরণ করতে তৈরি করুন।",
-            insecureContext: "Safer: পূরণের জন্য নিরাপদ প্রসঙ্গ (HTTPS) প্রয়োজন।",
+            insecureContext: "পূরণের জন্য নিরাপদ প্রসঙ্গ (HTTPS) প্রয়োজন।",
             sectionGeneral: "সাধারণ",
             showInputButtons: "পাসওয়ার্ড বোতাম",
             generated: "পাসওয়ার্ড তৈরি হয়েছে",
@@ -1043,14 +1058,14 @@ limitations under the License.
             reveal: 'পাসওয়ার্ড দেখান',
             hide: 'পাসওয়ার্ড লুকান',
             fill: 'পাসওয়ার্ড তৈরি ও পূরণ করুন',
-            close: '✕'
         },
         ta: {
+            fillUnavailable: "கடவுச்சொல் புலத்தைத் தேர்ந்தெடுக்கவும்.",
             entropyLabel: "என்ட்ரோபி",
             entropyExplanation: "SigilPass மதிப்பீடு: {count} சாத்தியமான சேர்க்கைகள்.",
             standardDescription: "அமைப்புகளின்படி கடவுச்சொல்லை உருவாக்கவும், காட்டவும் அல்லது நகலெடுக்கவும்.",
             saferDescription: "Safer முறை: கடவுச்சொல் புலத்தைத் தேர்ந்தெடுத்து நிரப்ப உருவாக்கவும்.",
-            insecureContext: "Safer: நிரப்ப பாதுகாப்பான சூழல் (HTTPS) தேவை.",
+            insecureContext: "நிரப்ப பாதுகாப்பான சூழல் (HTTPS) தேவை.",
             sectionGeneral: "பொது",
             showInputButtons: "கடவுச்சொல் பொத்தான்கள்",
             generated: "கடவுச்சொல் உருவாக்கப்பட்டது",
@@ -1080,14 +1095,14 @@ limitations under the License.
             reveal: 'கடவுச்சொல்லைக் காண்பி',
             hide: 'கடவுச்சொல்லை மறை',
             fill: 'கடவுச்சொல்லை உருவாக்கி நிரப்புக',
-            close: '✕'
         },
         ur: {
+            fillUnavailable: "پاس ورڈ کا خانہ منتخب کریں۔",
             entropyLabel: "اینٹروپی",
             entropyExplanation: "SigilPass تخمینہ: {count} ممکنہ مجموعے۔",
             standardDescription: "ترتیبات کے مطابق پاس ورڈ بنائیں، دکھائیں یا کاپی کریں۔",
             saferDescription: "Safer موڈ: پاس ورڈ کا خانہ منتخب کریں، پھر بھرنے کے لیے بنائیں۔",
-            insecureContext: "Safer: بھرنے کے لیے محفوظ سیاق (HTTPS) ضروری ہے۔",
+            insecureContext: "بھرنے کے لیے محفوظ سیاق (HTTPS) ضروری ہے۔",
             sectionGeneral: "عمومی",
             showInputButtons: "پاس ورڈ بٹن",
             generated: "پاس ورڈ بن گیا",
@@ -1117,14 +1132,14 @@ limitations under the License.
             reveal: 'پاس ورڈ دکھائیں',
             hide: 'پاس ورڈ چھپائیں',
             fill: 'پاس ورڈ بنائیں اور بھریں',
-            close: '✕'
         },
         ml: {
+            fillUnavailable: "പാസ്‌വേഡ് ഫീൽഡ് തിരഞ്ഞെടുക്കുക.",
             entropyLabel: "എൻട്രോപ്പി",
             entropyExplanation: "SigilPass കണക്ക്: {count} സാധ്യമായ സംയോജനങ്ങൾ.",
             standardDescription: "ക്രമീകരണങ്ങൾ അനുസരിച്ച് പാസ്‌വേഡ് സൃഷ്ടിക്കുക, കാണിക്കുക അല്ലെങ്കിൽ പകർത്തുക.",
             saferDescription: "Safer മോഡ്: പാസ്‌വേഡ് ഫീൽഡ് തിരഞ്ഞെടുത്ത് നിറയ്ക്കാൻ സൃഷ്ടിക്കുക.",
-            insecureContext: "Safer: നിറയ്ക്കാൻ സുരക്ഷിത സന്ദർഭം (HTTPS) ആവശ്യമാണ്.",
+            insecureContext: "നിറയ്ക്കാൻ സുരക്ഷിത സന്ദർഭം (HTTPS) ആവശ്യമാണ്.",
             sectionGeneral: "പൊതുവായത്",
             showInputButtons: "പാസ്‌വേഡ് ബട്ടണുകൾ",
             generated: "പാസ്‌വേഡ് സൃഷ്ടിച്ചു",
@@ -1154,14 +1169,14 @@ limitations under the License.
             reveal: 'പാസ്‌വേഡ് കാണിക്കുക',
             hide: 'പാസ്‌വേഡ് മറയ്ക്കുക',
             fill: 'പാസ്‌വേഡ് സൃഷ്ടിച്ച് പൂരിപ്പിക്കുക',
-            close: '✕'
         },
         mr: {
+            fillUnavailable: "पासवर्ड फील्ड निवडा.",
             entropyLabel: "एंट्रॉपी",
             entropyExplanation: "SigilPass अंदाज: {count} संभाव्य संयोग.",
             standardDescription: "सेटिंगनुसार पासवर्ड तयार करा, दाखवा किंवा कॉपी करा.",
             saferDescription: "Safer मोड: पासवर्ड फील्ड निवडा आणि भरण्यासाठी तयार करा.",
-            insecureContext: "Safer: भरण्यासाठी सुरक्षित संदर्भ (HTTPS) आवश्यक आहे.",
+            insecureContext: "भरण्यासाठी सुरक्षित संदर्भ (HTTPS) आवश्यक आहे.",
             sectionGeneral: "सामान्य",
             showInputButtons: "पासवर्ड बटणे",
             generated: "पासवर्ड तयार झाला",
@@ -1191,14 +1206,14 @@ limitations under the License.
             reveal: 'पासवर्ड दाखवा',
             hide: 'पासवर्ड लपवा',
             fill: 'पासवर्ड तयार करा आणि भरा',
-            close: '✕'
         },
         pa: {
+            fillUnavailable: "ਪਾਸਵਰਡ ਖਾਨਾ ਚੁਣੋ।",
             entropyLabel: "ਐਨਟ੍ਰੋਪੀ",
             entropyExplanation: "SigilPass ਅੰਦਾਜ਼ਾ: {count} ਸੰਭਾਵੀ ਸੰਜੋਗ।",
             standardDescription: "ਸੈਟਿੰਗਾਂ ਅਨੁਸਾਰ ਪਾਸਵਰਡ ਬਣਾਓ, ਦਿਖਾਓ ਜਾਂ ਕਾਪੀ ਕਰੋ।",
             saferDescription: "Safer ਮੋਡ: ਪਾਸਵਰਡ ਖਾਨਾ ਚੁਣੋ ਅਤੇ ਭਰਨ ਲਈ ਬਣਾਓ।",
-            insecureContext: "Safer: ਭਰਨ ਲਈ ਸੁਰੱਖਿਅਤ ਸੰਦਰਭ (HTTPS) ਲੋੜੀਂਦਾ ਹੈ।",
+            insecureContext: "ਭਰਨ ਲਈ ਸੁਰੱਖਿਅਤ ਸੰਦਰਭ (HTTPS) ਲੋੜੀਂਦਾ ਹੈ।",
             sectionGeneral: "ਆਮ",
             showInputButtons: "ਪਾਸਵਰਡ ਬਟਨ",
             generated: "ਪਾਸਵਰਡ ਬਣਾਇਆ ਗਿਆ",
@@ -1228,14 +1243,14 @@ limitations under the License.
             reveal: 'ਪਾਸਵਰਡ ਦਿਖਾਓ',
             hide: 'ਪਾਸਵਰਡ ਲੁਕਾਓ',
             fill: 'ਪਾਸਵਰਡ ਤਿਆਰ ਕਰੋ ਅਤੇ ਭਰੋ',
-            close: '✕'
         },
         gu: {
+            fillUnavailable: "પાસવર્ડ ખાનું પસંદ કરો.",
             entropyLabel: "એન્ટ્રોપી",
             entropyExplanation: "SigilPass અંદાજ: {count} સંભવિત સંયોજનો.",
             standardDescription: "સેટિંગ મુજબ પાસવર્ડ બનાવો, બતાવો અથવા નકલ કરો.",
             saferDescription: "Safer મોડ: પાસવર્ડનું ખાનું પસંદ કરો અને ભરવા માટે બનાવો.",
-            insecureContext: "Safer: ભરવા માટે સુરક્ષિત સંદર્ભ (HTTPS) જરૂરી છે.",
+            insecureContext: "ભરવા માટે સુરક્ષિત સંદર્ભ (HTTPS) જરૂરી છે.",
             sectionGeneral: "સામાન્ય",
             showInputButtons: "પાસવર્ડ બટનો",
             generated: "પાસવર્ડ બનાવ્યો",
@@ -1265,14 +1280,14 @@ limitations under the License.
             reveal: 'પાસવર્ડ બતાવો',
             hide: 'પાસવર્ડ છુપાવો',
             fill: 'પાસવર્ડ બનાવો અને ભરો',
-            close: '✕'
         },
         kn: {
+            fillUnavailable: "ಪಾಸ್‌ವರ್ಡ್ ಕ್ಷೇತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
             entropyLabel: "ಎಂಟ್ರೋಪಿ",
             entropyExplanation: "SigilPass ಅಂದಾಜು: {count} ಸಾಧ್ಯ ಸಂಯೋಜನೆಗಳು.",
             standardDescription: "ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಪ್ರಕಾರ ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ, ತೋರಿಸಿ ಅಥವಾ ನಕಲಿಸಿ.",
             saferDescription: "Safer ಮೋಡ್: ಪಾಸ್‌ವರ್ಡ್ ಕ್ಷೇತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ ತುಂಬಲು ರಚಿಸಿ.",
-            insecureContext: "Safer: ತುಂಬಲು ಸುರಕ್ಷಿತ ಸಂದರ್ಭ (HTTPS) ಅಗತ್ಯವಿದೆ.",
+            insecureContext: "ತುಂಬಲು ಸುರಕ್ಷಿತ ಸಂದರ್ಭ (HTTPS) ಅಗತ್ಯವಿದೆ.",
             sectionGeneral: "ಸಾಮಾನ್ಯ",
             showInputButtons: "ಪಾಸ್‌ವರ್ಡ್ ಬಟನ್‌ಗಳು",
             generated: "ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಲಾಗಿದೆ",
@@ -1302,14 +1317,14 @@ limitations under the License.
             reveal: 'ಪಾಸ್‌ವರ್ಡ್ ತೋರಿಸಿ',
             hide: 'ಪಾಸ್‌ವರ್ಡ್ ಮರೆಮಾಡಿ',
             fill: 'ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ ಮತ್ತು ಭರ್ತಿ ಮಾಡಿ',
-            close: '✕'
         },
         te: {
+            fillUnavailable: "పాస్‌వర్డ్ ఫీల్డ్‌ను ఎంచుకోండి.",
             entropyLabel: "ఎంట్రోపీ",
             entropyExplanation: "SigilPass అంచనా: {count} సాధ్యమైన కలయికలు.",
             standardDescription: "సెట్టింగ్‌ల ప్రకారం పాస్‌వర్డ్ సృష్టించండి, చూపించండి లేదా కాపీ చేయండి.",
             saferDescription: "Safer మోడ్: పాస్‌వర్డ్ ఫీల్డ్ ఎంచుకుని నింపడానికి సృష్టించండి.",
-            insecureContext: "Safer: నింపడానికి సురక్షిత సందర్భం (HTTPS) అవసరం.",
+            insecureContext: "నింపడానికి సురక్షిత సందర్భం (HTTPS) అవసరం.",
             sectionGeneral: "సాధారణం",
             showInputButtons: "పాస్‌వర్డ్ బటన్‌లు",
             generated: "పాస్‌వర్డ్ సృష్టించబడింది",
@@ -1339,14 +1354,14 @@ limitations under the License.
             reveal: 'పాస్‌వర్డ్ చూపించు',
             hide: 'పాస్‌వర్డ్ దాచు',
             fill: 'పాస్‌వర్డ్ సృష్టించి నింపండి',
-            close: '✕'
         },
         si: {
+            fillUnavailable: "මුරපද ක්ෂේත්‍රයක් තෝරන්න.",
             entropyLabel: "එන්ට්‍රොපිය",
             entropyExplanation: "SigilPass ඇස්තමේන්තුව: හැකි සංයෝජන {count}ක්.",
             standardDescription: "සැකසුම් අනුව මුරපදයක් සාදන්න, පෙන්වන්න හෝ පිටපත් කරන්න.",
             saferDescription: "Safer ප්‍රකාරය: මුරපද ක්ෂේත්‍රයක් තෝරා පිරවීමට සාදන්න.",
-            insecureContext: "Safer: පිරවීමට ආරක්ෂිත සන්දර්භයක් (HTTPS) අවශ්‍යය.",
+            insecureContext: "පිරවීමට ආරක්ෂිත සන්දර්භයක් (HTTPS) අවශ්‍යය.",
             sectionGeneral: "සාමාන්‍ය",
             showInputButtons: "මුරපද බොත්තම්",
             generated: "මුරපදය සාදන ලදී",
@@ -1376,14 +1391,14 @@ limitations under the License.
             reveal: 'මුරපදය පෙන්වන්න',
             hide: 'මුරපදය සඟවන්න',
             fill: 'මුරපදය සාදමින් පුරවන්න',
-            close: '✕'
         },
         km: {
+            fillUnavailable: "ជ្រើសវាលពាក្យសម្ងាត់។",
             entropyLabel: "អង់ត្រូពី",
             entropyExplanation: "ការប៉ាន់ស្មាន SigilPass៖ {count} បន្សំដែលអាចមាន។",
             standardDescription: "បង្កើត បង្ហាញ ឬចម្លងពាក្យសម្ងាត់តាមការកំណត់។",
             saferDescription: "របៀប Safer៖ ជ្រើសវាលពាក្យសម្ងាត់ រួចបង្កើតដើម្បីបំពេញ។",
-            insecureContext: "Safer៖ ការបំពេញត្រូវការបរិបទសុវត្ថិភាព (HTTPS)។",
+            insecureContext: "ការបំពេញត្រូវការបរិបទសុវត្ថិភាព (HTTPS)។",
             sectionGeneral: "ទូទៅ",
             showInputButtons: "ប៊ូតុងពាក្យសម្ងាត់",
             generated: "បានបង្កើតពាក្យសម្ងាត់",
@@ -1413,14 +1428,14 @@ limitations under the License.
             reveal: 'បង្ហាញពាក្យសម្ងាត់',
             hide: 'លាក់ពាក្យសម្ងាត់',
             fill: 'បង្កើត និងបំពេញពាក្យសម្ងាត់',
-            close: '✕'
         },
         lo: {
+            fillUnavailable: "ເລືອກຊ່ອງລະຫັດຜ່ານ.",
             entropyLabel: "ເອນໂທຣປີ",
             entropyExplanation: "ການຄາດຄະເນ SigilPass: {count} ຮູບແບບທີ່ເປັນໄປໄດ້.",
             standardDescription: "ສ້າງ ສະແດງ ຫຼືຄັດລອກລະຫັດຜ່ານຕາມການຕັ້ງຄ່າ.",
             saferDescription: "ໂໝດ Safer: ເລືອກຊ່ອງລະຫັດຜ່ານ ແລ້ວສ້າງເພື່ອຕື່ມ.",
-            insecureContext: "Safer: ການຕື່ມຕ້ອງໃຊ້ບໍລິບົດທີ່ປອດໄພ (HTTPS).",
+            insecureContext: "ການຕື່ມຕ້ອງໃຊ້ບໍລິບົດທີ່ປອດໄພ (HTTPS).",
             sectionGeneral: "ທົ່ວໄປ",
             showInputButtons: "ປຸ່ມລະຫັດຜ່ານ",
             generated: "ສ້າງລະຫັດຜ່ານແລ້ວ",
@@ -1450,14 +1465,14 @@ limitations under the License.
             reveal: 'ສະແດງລະຫັດຜ່ານ',
             hide: 'ເຊື່ອງລະຫັດຜ່ານ',
             fill: 'ສ້າງ ແລະ ຕື່ມລະຫັດຜ່ານ',
-            close: '✕'
         },
         my: {
+            fillUnavailable: "စကားဝှက်အကွက်ကို ရွေးပါ။",
             entropyLabel: "အင်ထရိုပီ",
             entropyExplanation: "SigilPass ခန့်မှန်းချက်: ဖြစ်နိုင်သော ပေါင်းစပ်မှု {count} ခု။",
             standardDescription: "ဆက်တင်များအတိုင်း စကားဝှက် ဖန်တီး၊ ပြသ သို့မဟုတ် ကူးယူပါ။",
             saferDescription: "Safer မုဒ်: စကားဝှက်အကွက်ကို ရွေးပြီး ဖြည့်ရန် ဖန်တီးပါ။",
-            insecureContext: "Safer: ဖြည့်ရန် လုံခြုံသောအခြေအနေ (HTTPS) လိုအပ်သည်။",
+            insecureContext: "ဖြည့်ရန် လုံခြုံသောအခြေအနေ (HTTPS) လိုအပ်သည်။",
             sectionGeneral: "အထွေထွေ",
             showInputButtons: "စကားဝှက်ခလုတ်များ",
             generated: "စကားဝှက် ဖန်တီးပြီးပါပြီ",
@@ -1487,14 +1502,14 @@ limitations under the License.
             reveal: 'စကားဝှက် ပြပါ',
             hide: 'စကားဝှက် ဝှက်ပါ',
             fill: 'စကားဝှက် ဖန်တီးပြီး ဖြည့်ပါ',
-            close: '✕'
         },
         ne: {
+            fillUnavailable: "पासवर्ड फिल्ड छान्नुहोस्।",
             entropyLabel: "एन्ट्रोपी",
             entropyExplanation: "SigilPass अनुमान: {count} सम्भावित संयोजनहरू।",
             standardDescription: "सेटिङअनुसार पासवर्ड सिर्जना, प्रदर्शन वा प्रतिलिपि गर्नुहोस्।",
             saferDescription: "Safer मोड: पासवर्ड फिल्ड छानेर भर्नका लागि सिर्जना गर्नुहोस्।",
-            insecureContext: "Safer: भर्न सुरक्षित सन्दर्भ (HTTPS) चाहिन्छ।",
+            insecureContext: "भर्न सुरक्षित सन्दर्भ (HTTPS) चाहिन्छ।",
             sectionGeneral: "सामान्य",
             showInputButtons: "पासवर्ड बटनहरू",
             generated: "पासवर्ड सिर्जना गरियो",
@@ -1524,14 +1539,14 @@ limitations under the License.
             reveal: 'पासवर्ड देखाउनुहोस्',
             hide: 'पासवर्ड लुकाउनुहोस्',
             fill: 'पासवर्ड सिर्जना गरी भर्नुहोस्',
-            close: '✕'
         },
         am: {
+            fillUnavailable: "የይለፍ ቃል መስክ ይምረጡ።",
             entropyLabel: "ኤንትሮፒ",
             entropyExplanation: "የSigilPass ግምት፦ {count} ሊኖሩ የሚችሉ ጥምረቶች።",
             standardDescription: "በቅንብሮችዎ መሠረት የይለፍ ቃል ይፍጠሩ፣ ያሳዩ ወይም ይቅዱ።",
             saferDescription: "የSafer ሁነታ፦ የይለፍ ቃል መስክ ይምረጡና ለመሙላት ይፍጠሩ።",
-            insecureContext: "Safer፦ መሙላት ደህንነቱ የተጠበቀ አውድ (HTTPS) ይፈልጋል።",
+            insecureContext: "መሙላት ደህንነቱ የተጠበቀ አውድ (HTTPS) ይፈልጋል።",
             sectionGeneral: "አጠቃላይ",
             showInputButtons: "የይለፍ ቃል አዝራሮች",
             generated: "የይለፍ ቃል ተፈጥሯል",
@@ -1561,14 +1576,14 @@ limitations under the License.
             reveal: 'የይለፍ ቃል አሳይ',
             hide: 'የይለፍ ቃል ደብቅ',
             fill: 'የይለፍ ቃል ፍጠር እና ሙላ',
-            close: '✕'
         },
         sw: {
+            fillUnavailable: "Chagua sehemu ya nenosiri.",
             entropyLabel: "Entropia",
             entropyExplanation: "Makadirio ya SigilPass: michanganyiko {count} inayowezekana.",
             standardDescription: "Tengeneza, onyesha au nakili nenosiri kulingana na mipangilio.",
             saferDescription: "Hali ya Safer: Chagua sehemu ya nenosiri kisha tengeneza ili kuijaza.",
-            insecureContext: "Safer: kujaza kunahitaji muktadha salama (HTTPS).",
+            insecureContext: "Kujaza kunahitaji muktadha salama (HTTPS).",
             sectionGeneral: "Jumla",
             showInputButtons: "Vitufe vya nenosiri",
             generated: "Nenosiri limetengenezwa",
@@ -1598,14 +1613,14 @@ limitations under the License.
             reveal: 'Onyesha nenosiri',
             hide: 'Ficha nenosiri',
             fill: 'Tengeneza na ujaze nenosiri',
-            close: '✕'
         },
         af: {
+            fillUnavailable: "Kies 'n wagwoordveld.",
             entropyLabel: "Entropie",
             entropyExplanation: "SigilPass-skatting: {count} moontlike kombinasies.",
             standardDescription: "Genereer, wys of kopieer 'n wagwoord volgens jou instellings.",
             saferDescription: "Safer-modus: Kies 'n wagwoordveld en genereer om dit in te vul.",
-            insecureContext: "Safer: invul vereis 'n veilige konteks (HTTPS).",
+            insecureContext: "Invul vereis 'n veilige konteks (HTTPS).",
             sectionGeneral: "Algemeen",
             showInputButtons: "Wagwoordknoppies",
             generated: "Wagwoord gegenereer",
@@ -1635,14 +1650,14 @@ limitations under the License.
             reveal: 'Wys wagwoord',
             hide: 'Versteek wagwoord',
             fill: 'Genereer en vul wagwoord in',
-            close: '✕'
         },
         et: {
+            fillUnavailable: "Vali parooliväli.",
             entropyLabel: "Entroopia",
             entropyExplanation: "SigilPassi hinnang: {count} võimalikku kombinatsiooni.",
             standardDescription: "Loo, kuva või kopeeri parool vastavalt seadetele.",
             saferDescription: "Safer-režiim: Vali parooliväli ning genereeri selle täitmiseks.",
-            insecureContext: "Safer: täitmine nõuab turvalist konteksti (HTTPS).",
+            insecureContext: "Täitmine nõuab turvalist konteksti (HTTPS).",
             sectionGeneral: "Üldine",
             showInputButtons: "Paroolinupud",
             generated: "Parool loodud",
@@ -1672,14 +1687,14 @@ limitations under the License.
             reveal: 'Kuva parool',
             hide: 'Peida parool',
             fill: 'Loo ja täida parool',
-            close: '✕'
         },
         lv: {
+            fillUnavailable: "Izvēlieties paroles lauku.",
             entropyLabel: "Entropija",
             entropyExplanation: "SigilPass aplēse: {count} iespējamās kombinācijas.",
             standardDescription: "Ģenerējiet, rādiet vai kopējiet paroli atbilstoši iestatījumiem.",
             saferDescription: "Safer režīms: Izvēlieties paroles lauku un ģenerējiet, lai to aizpildītu.",
-            insecureContext: "Safer: aizpildīšanai nepieciešams drošs konteksts (HTTPS).",
+            insecureContext: "Aizpildīšanai nepieciešams drošs konteksts (HTTPS).",
             sectionGeneral: "Vispārīgi",
             showInputButtons: "Paroles pogas",
             generated: "Parole ģenerēta",
@@ -1709,14 +1724,14 @@ limitations under the License.
             reveal: 'Rādīt paroli',
             hide: 'Slēpt paroli',
             fill: 'Ģenerēt un aizpildīt paroli',
-            close: '✕'
         },
         lt: {
+            fillUnavailable: "Pasirinkite slaptažodžio lauką.",
             entropyLabel: "Entropija",
             entropyExplanation: "SigilPass įvertis: {count} galimų kombinacijų.",
             standardDescription: "Generuokite, rodykite arba kopijuokite slaptažodį pagal nustatymus.",
             saferDescription: "Safer režimas: Pasirinkite slaptažodžio lauką ir generuokite, kad jį užpildytumėte.",
-            insecureContext: "Safer: užpildymui reikalingas saugus kontekstas (HTTPS).",
+            insecureContext: "Užpildymui reikalingas saugus kontekstas (HTTPS).",
             sectionGeneral: "Bendra",
             showInputButtons: "Slaptažodžio mygtukai",
             generated: "Slaptažodis sugeneruotas",
@@ -1746,14 +1761,14 @@ limitations under the License.
             reveal: 'Rodyti slaptažodį',
             hide: 'Slėpti slaptažodį',
             fill: 'Generuoti ir užpildyti slaptažodį',
-            close: '✕'
         },
         is: {
+            fillUnavailable: "Veldu lykilorðsreit.",
             entropyLabel: "Óreiða",
             entropyExplanation: "SigilPass-áætlun: {count} mögulegar samsetningar.",
             standardDescription: "Búðu til, sýndu eða afritaðu lykilorð samkvæmt stillingum.",
             saferDescription: "Safer-stilling: Veldu lykilorðsreit og búðu til lykilorð til að fylla hann út.",
-            insecureContext: "Safer: útfylling krefst öruggs samhengis (HTTPS).",
+            insecureContext: "Útfylling krefst öruggs samhengis (HTTPS).",
             sectionGeneral: "Almennt",
             showInputButtons: "Lykilorðshnappar",
             generated: "Lykilorð búið til",
@@ -1783,14 +1798,14 @@ limitations under the License.
             reveal: 'Sýna lykilorð',
             hide: 'Fela lykilorð',
             fill: 'Búa til og fylla út lykilorð',
-            close: '✕'
         },
         ga: {
+            fillUnavailable: "Roghnaigh réimse pasfhocail.",
             entropyLabel: "Eantrópacht",
             entropyExplanation: "Meastachán SigilPass: {count} teaglaim fhéideartha.",
             standardDescription: "Gin, taispeáin nó cóipeáil pasfhocal de réir do shocruithe.",
             saferDescription: "Mód Safer: Roghnaigh réimse pasfhocail agus gin chun é a líonadh.",
-            insecureContext: "Safer: teastaíonn comhthéacs slán (HTTPS) chun líonadh.",
+            insecureContext: "Teastaíonn comhthéacs slán (HTTPS) chun líonadh.",
             sectionGeneral: "Ginearálta",
             showInputButtons: "Cnaipí pasfhocail",
             generated: "Pasfhocal ginte",
@@ -1820,14 +1835,14 @@ limitations under the License.
             reveal: 'Taispeáin pasfhocal',
             hide: 'Folaigh pasfhocal',
             fill: 'Gin agus líon pasfhocal',
-            close: '✕'
         },
         mt: {
+            fillUnavailable: "Agħżel qasam tal-password.",
             entropyLabel: "Entropija",
             entropyExplanation: "Stima SigilPass: {count} kombinazzjonijiet possibbli.",
             standardDescription: "Iġġenera, uri jew ikkopja password skont is-settings.",
             saferDescription: "Modalità Safer: Agħżel qasam tal-password u ġġenera biex timlieh.",
-            insecureContext: "Safer: il-mili jeħtieġ kuntest sigur (HTTPS).",
+            insecureContext: "Il-mili jeħtieġ kuntest sigur (HTTPS).",
             sectionGeneral: "Ġenerali",
             showInputButtons: "Buttuni tal-password",
             generated: "Password iġġenerata",
@@ -1857,7 +1872,6 @@ limitations under the License.
             reveal: 'Uri password',
             hide: 'Aħbi password',
             fill: 'Iġġenera u imla l-password',
-            close: '✕'
         }
 
 
@@ -1897,8 +1911,8 @@ limitations under the License.
         return '';
     }
 
-    const userLang = getSavedLanguage() || normalizeLanguage(navigator.language || navigator.userLanguage) || 'en';
-    const i18n = translations[userLang] || translations.en;
+    let userLang = getSavedLanguage() || normalizeLanguage(navigator.language || navigator.userLanguage) || 'en';
+    let i18n = translations[userLang] || translations.en;
     function getLanguageLabel(language) {
         try {
             const locale = language.replace(/_/g, '-');
@@ -1907,32 +1921,12 @@ limitations under the License.
             return language;
         }
     }
-    const strings = {
-        copied: i18n.copied || translations.en.copied,
-        generated: i18n.generated || translations.en.generated || 'Password generated',
-        copyFailed: i18n.copyFailed || translations.en.copyFailed,
-        reveal: i18n.reveal || translations.en.reveal,
-        hide: i18n.hide || translations.en.hide,
-        close: i18n.close || translations.en.close,
-        settingsMenu: i18n.settingsMenu || translations.en.settingsMenu || 'Password Generator Settings',
-        settingsTitle: i18n.settingsTitle || translations.en.settingsTitle || 'Settings',
-        sectionPassword: i18n.sectionPassword || translations.en.sectionPassword || 'Password',
-        sectionDisplay: i18n.sectionDisplay || translations.en.sectionDisplay || 'Display',
-        sectionGeneral: i18n.sectionGeneral || translations.en.sectionGeneral || 'General',
-        showBubble: i18n.showBubble || translations.en.showBubble || 'Show bubble',
-        hidePasswordSetting: i18n.hidePasswordSetting || translations.en.hidePasswordSetting || 'Hide password',
-        showInputButtons: i18n.showInputButtons || translations.en.showInputButtons || 'Password buttons',
-        fill: i18n.fill || translations.en.fill || 'Generate & fill password',
-        language: i18n.language || translations.en.language || 'Language',
-        theme: i18n.theme || translations.en.theme || 'Theme',
-        themeDark: i18n.themeDark || translations.en.themeDark || 'Dark',
-        themeLight: i18n.themeLight || translations.en.themeLight || 'Light',
-        securityMode: i18n.securityMode || translations.en.securityMode || 'Security mode',
-        securityStandard: i18n.securityStandard || translations.en.securityStandard || 'Standard',
-        securitySafer: i18n.securitySafer || translations.en.securitySafer || 'Safer',
-        copyOnGenerate: i18n.copyOnGenerate || translations.en.copyOnGenerate || 'Automatic copy',
-        secureRandomUnavailable: i18n.secureRandomUnavailable || translations.en.secureRandomUnavailable
-    };
+    function resolveStrings(language) {
+        const localized = translations[language] || translations.en;
+        return Object.fromEntries(Object.entries(translations.en).map(([key, fallback]) => [key, localized[key] || fallback]));
+    }
+
+    let strings = resolveStrings(userLang);
 
     const MIN_LENGTH = 12;
     const MAX_LENGTH = 64;
@@ -2053,6 +2047,7 @@ limitations under the License.
     let currentPassword = '';
     let isPasswordVisible = false;
     let notificationAutoHideTimer = null;
+    let notificationHideTimer = null;
 
 
     function generatePassword(length, includeUppercase, includeNumbers, includeSymbols) {
@@ -2095,7 +2090,7 @@ limitations under the License.
         return pass.replace(/./g, '•');
     }
 
-    // Conservative min-entropy bound accounting for forced character categories and the remaining random draws after shuffling.
+    // Conservative entropy estimate accounting for forced character categories and the remaining random draws after shuffling.
     function estimateGeneratedEntropy(length, includeUppercase, includeNumbers, includeSymbols) {
         const categorySizes = [26];
         if (includeUppercase) categorySizes.push(26);
@@ -2151,13 +2146,17 @@ limitations under the License.
         notificationPassword.textContent = '';
         notificationEl.style.opacity = '0';
         notificationEl.style.transform = 'translateY(12px) scale(0.98)';
-        setTimeout(() => {
+        clearTimeout(notificationHideTimer);
+        notificationHideTimer = setTimeout(() => {
             notificationEl.style.display = 'none';
+            notificationHideTimer = null;
         }, 250);
     }
 
     function showPasswordNotification(notificationEl, notificationPasswordEl, eyeButtonEl) {
         if (!notificationEl) return;
+        clearTimeout(notificationHideTimer);
+        notificationHideTimer = null;
         notificationPasswordWrap.style.display = currentPassword ? 'flex' : 'none';
         notificationEl.style.display = 'flex';
         requestAnimationFrame(() => {
@@ -2573,7 +2572,7 @@ limitations under the License.
     const closeButton = document.createElement('button');
     closeButton.className = 'spg-close-button';
     closeButton.type = 'button';
-    closeButton.textContent = strings.close;
+    closeButton.textContent = CLOSE_SYMBOL;
     closeButton.style.background = 'none';
     closeButton.style.border = 'none';
     closeButton.style.color = '#F87171';
@@ -2585,7 +2584,7 @@ limitations under the License.
     closeButton.style.alignItems = 'center';
     closeButton.style.justifyContent = 'center';
     closeButton.style.padding = '0';
-    closeButton.setAttribute('aria-label', strings.close);
+    closeButton.setAttribute('aria-label', CLOSE_SYMBOL);
 
     const menuHeader = document.createElement('div');
     menuHeader.style.display = 'flex';
@@ -2792,7 +2791,7 @@ limitations under the License.
         const mantissa = 10 ** (bits * Math.LOG10E * Math.LN2 - exponent);
         const superscript = String(exponent).replace(/\d/g, digit => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(digit)]);
         const count = `${new Intl.NumberFormat(userLang.replace(/_/g, '-'), { maximumFractionDigits: 1 }).format(mantissa)} × 10${superscript}`;
-        menuContent.querySelector('#entropyHelp').textContent = i18n.entropyExplanation.replace('{count}', count);
+        menuContent.querySelector('#entropyHelp').textContent = strings.entropyExplanation.replace('{count}', count);
     }
 
     params.addEventListener('input', updateEntropyMeter);
@@ -2839,12 +2838,10 @@ limitations under the License.
         hideNotification(notification);
     }
 
-    function applySecurityMode(mode, persist = false) {
-        securityMode = normalizeSecurityMode(mode);
-        const safer = securityMode === 'safer';
+    function updateSecurityModeDescription() {
         const description = menuContent.querySelector('#securityModeDescription');
         description.replaceChildren();
-        const text = safer ? i18n.saferDescription : i18n.standardDescription;
+        const text = securityMode === 'safer' ? strings.saferDescription : strings.standardDescription;
         const sentences = typeof Intl.Segmenter === 'function'
             ? Array.from(new Intl.Segmenter(userLang.replace(/_/g, '-'), { granularity: 'sentence' }).segment(text), entry => entry.segment)
             : text.split(/(?<=[.!。।])\s+/u);
@@ -2853,6 +2850,14 @@ limitations under the License.
             item.textContent = part;
             description.appendChild(item);
         });
+    }
+
+    function applySecurityMode(mode, persist = false) {
+        const nextMode = normalizeSecurityMode(mode);
+        if (nextMode !== securityMode) purgeSensitiveData();
+        securityMode = nextMode;
+        const safer = securityMode === 'safer';
+        updateSecurityModeDescription();
         securityModeButtons.forEach(button => {
             button.setAttribute('aria-pressed', `${button.dataset.securityMode === securityMode}`);
         });
@@ -2975,10 +2980,71 @@ limitations under the License.
     });
 
     languageSelect?.addEventListener('change', () => {
-        const language = normalizeLanguage(languageSelect.value) || 'en';
-        setSetting('language', language);
-        window.location.reload();
+        applyLanguage(languageSelect.value);
     });
+
+    function applyLanguage(language, persist = true) {
+        const scrollTop = params.scrollTop;
+        userLang = normalizeLanguage(language) || 'en';
+        i18n = translations[userLang] || translations.en;
+        strings = resolveStrings(userLang);
+        languageSelect.value = userLang;
+        uiHost.lang = userLang.replace(/_/g, '-');
+
+        const sectionKeys = ['sectionPassword', 'sectionDisplay', 'sectionGeneral'];
+        params.querySelectorAll('.spg-section-toggle').forEach((heading, index) => {
+            heading.textContent = strings[sectionKeys[index]];
+        });
+        const labelKeys = {
+            passwordLength: 'length', includeUppercase: 'uppercase', includeNumbers: 'numbers',
+            includeSymbols: 'symbols', showBubble: 'showBubble', hidePasswordSetting: 'hidePasswordSetting',
+            showInputButtons: 'showInputButtons', copyOnGenerate: 'copyOnGenerate', languageSelect: 'language'
+        };
+        Object.entries(labelKeys).forEach(([id, key]) => {
+            params.querySelector(`label[for="${id}"] .spg-row-text`).textContent = strings[key];
+            params.querySelector(`#${id}`).setAttribute('aria-label', strings[key]);
+        });
+        const themeGroup = themeButtons[0].parentElement;
+        themeGroup.previousElementSibling.textContent = strings.theme;
+        themeGroup.setAttribute('aria-label', strings.theme);
+        themeButtons.forEach(button => {
+            button.textContent = button.dataset.themeOption === 'dark' ? strings.themeDark : strings.themeLight;
+        });
+        const securityGroup = securityModeButtons[0].parentElement;
+        securityGroup.previousElementSibling.textContent = strings.securityMode;
+        securityGroup.setAttribute('aria-label', strings.securityMode);
+        securityModeButtons.forEach(button => {
+            button.textContent = button.dataset.securityMode === 'safer' ? strings.securitySafer : strings.securityStandard;
+        });
+        params.querySelector('.spg-entropy > span').textContent = strings.entropyLabel;
+        params.querySelector('#entropyInfo').setAttribute('aria-label', strings.entropyLabel);
+        menuHeaderTitle.textContent = strings.settingsTitle;
+        settingsButton.title = strings.settingsTitle;
+        settingsButton.setAttribute('aria-label', strings.settingsTitle);
+        button.setAttribute('aria-label', strings.generateFull);
+        closeButton.textContent = CLOSE_SYMBOL;
+        closeButton.setAttribute('aria-label', CLOSE_SYMBOL);
+        if (!buttonContent.querySelector('svg')) {
+            buttonContent.textContent = container.style.height === '56px' ? strings.generateFull : strings.generate;
+        }
+        observedInputs.forEach(input => {
+            const inlineButton = lockButtons.get(input);
+            if (!inlineButton) return;
+            inlineButton.title = strings.fill;
+            inlineButton.setAttribute('aria-label', strings.fill);
+        });
+        notificationTitle.textContent = strings[notificationMessageKey];
+        notificationClose.textContent = CLOSE_SYMBOL;
+        notificationClose.title = CLOSE_SYMBOL;
+        notificationClose.setAttribute('aria-label', CLOSE_SYMBOL);
+        eyeButton.title = isPasswordVisible ? strings.hide : strings.reveal;
+        eyeButton.setAttribute('aria-label', eyeButton.title);
+        updateSecurityModeDescription();
+        updateEntropyMeter();
+        params.scrollTop = scrollTop;
+        if (persist) setSetting('language', userLang);
+        refreshMenuCommands();
+    }
 
     themeButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -3094,6 +3160,7 @@ limitations under the License.
     });
 
     const notificationTitle = document.createElement('span');
+    let notificationMessageKey = 'copied';
     notificationTitle.textContent = strings.copied;
     notificationTitle.style.fontWeight = '700';
     notificationTitle.style.fontSize = '14px';
@@ -3127,7 +3194,7 @@ limitations under the License.
 
     const notificationClose = document.createElement('button');
     notificationClose.type = 'button';
-    notificationClose.textContent = strings.close;
+    notificationClose.textContent = CLOSE_SYMBOL;
     Object.assign(notificationClose.style, {
         width: '32px',
         height: '32px',
@@ -3145,8 +3212,8 @@ limitations under the License.
         justifyContent: 'center',
         transition: 'transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease'
     });
-    notificationClose.setAttribute('aria-label', strings.close);
-    notificationClose.title = strings.close;
+    notificationClose.setAttribute('aria-label', CLOSE_SYMBOL);
+    notificationClose.title = CLOSE_SYMBOL;
 
     const notificationPasswordWrap = document.createElement('div');
     Object.assign(notificationPasswordWrap.style, {
@@ -3197,10 +3264,15 @@ limitations under the License.
 
     setNotificationState(false);
 
-    function showStatusMessage(message, isError = false) {
+    function setNotificationMessage(key) {
+        notificationMessageKey = key;
+        notificationTitle.textContent = strings[key];
+    }
+
+    function showStatusMessage(key, isError = false) {
         currentPassword = '';
         isPasswordVisible = false;
-        notificationTitle.textContent = message;
+        setNotificationMessage(key);
         setNotificationState(isError);
         showPasswordNotification(notification, notificationPassword, eyeButton);
         notificationPasswordWrap.style.display = 'none';
@@ -3246,6 +3318,8 @@ limitations under the License.
     document.body.appendChild(uiHost);
 
     const lockButtons = new WeakMap();
+    const knownPasswordInputs = new WeakSet();
+    const passwordInputSelector = 'input[type="password" i], input[autocomplete~="new-password" i], input[autocomplete~="current-password" i]';
     const observedInputs = new Set();
     let repositionRaf = null;
     let lastLockPassword = '';
@@ -3274,25 +3348,25 @@ limitations under the License.
             input.placeholder || '',
             input.getAttribute('aria-label') || '',
             labelText
-        ].join(' ').toLowerCase();
+        ].join(' ').replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
     }
 
     function isLikelyOldPassword(input) {
+        const autocomplete = (input.getAttribute('autocomplete') || '').toLowerCase().split(/\s+/);
+        if (autocomplete.includes('current-password')) return true;
         const text = getTextContext(input);
-        return /\b(old|current|existing|previous|ancien|ancienne|actuel|existant|antiguo|anterior|actual|alt|aktuell|vorhanden|vecchio|attuale|antigo|atual|старый|текущий|существующий|旧|已有|当前|古い|既存|이전|기존|oude|bestaand|stary|istniejący|eski|mevcut|gamla|befintlig|vechi|existent|cũ|hiện tại|पुराना|मौजूदा|เก่า|มีอยู่)\b/i.test(text);
-    }
-
-    function isLikelyPasswordField(input) {
-        if (!input) return false;
-        const type = (input.type || '').toLowerCase();
-        const autocomplete = (input.getAttribute('autocomplete') || '').toLowerCase();
-        const text = getTextContext(input);
-        const passwordHint = /(password|passwort|passcode|mot de passe|\bmdp\b|senha|contraseña|clave|hasło|пароль|парол|암호|비밀번호|密码|密碼|パスワード|كلمة\s?المرور|şifre|şifresi|parola|jelszó|heslo|slaptažodis|parool|lösenord|adgangskode|salasana|wachtwoord|κωδικός|סיסמה|पासवर्ड|รหัสผ่าน|mật\s?khẩu|kata\s?sandi|kata\s?laluan|senha\s?de\s?acesso|пароль\s?доступу)/i;
-        return type === 'password' || autocomplete.includes('password') || passwordHint.test(text);
+        const separated = text.replace(/[_\-]/g, ' ');
+        const words = /(?<![\p{L}\p{M}])(old|current|existing|previous|ancien|ancienne|actuel|actuelle|existant|antiguo|anterior|actual|alt|aktuell|vorhanden|vecchio|attuale|antigo|atual|старый|текущий|существующий|oude|bestaand|stary|istniejący|eski|mevcut|gamla|befintlig|vechi|existent|cũ|hiện tại)(?![\p{L}\p{M}])/iu;
+        const joined = /旧|舊|已有|当前|當前|古い|既存|現在|이전|기존|현재|पुराना|पुराने|पुरानी|मौजूदा|वर्तमान|เก่า|มีอยู่|ปัจจุบัน/u;
+        return words.test(separated) || joined.test(text);
     }
 
     function shouldAutoFillPassword(input) {
-        return input && !input.disabled && !input.readOnly && isLikelyPasswordField(input);
+        if (!input || input.disabled || input.readOnly) return false;
+        if (input.type === 'password') return true;
+        if (input.type !== 'text') return false;
+        const tokens = (input.getAttribute('autocomplete') || '').toLowerCase().split(/\s+/);
+        return knownPasswordInputs.has(input) || tokens.includes('new-password') || tokens.includes('current-password');
     }
 
     function getPlacementBounds(input) {
@@ -3315,22 +3389,46 @@ limitations under the License.
     }
 
     function collectPasswordTargets(triggerInput) {
-        const scope = triggerInput.form || triggerInput.closest('form, fieldset, section, div') || document;
-        let candidates = Array.from(scope.querySelectorAll('input[type="password"]'));
-        if (candidates.length === 0 && scope !== document) {
-            candidates = Array.from(document.querySelectorAll('input[type="password"]'));
+        const visible = input => {
+            const view = input.ownerDocument.defaultView;
+            const style = view.getComputedStyle(input);
+            return input.getClientRects().length > 0 && style.visibility !== 'hidden' && style.visibility !== 'collapse';
+        };
+        const eligible = input => shouldAutoFillPassword(input) && visible(input);
+        if (!eligible(triggerInput)) return [];
+        if (isLikelyOldPassword(triggerInput)) return [triggerInput];
+        const companion = input => input !== triggerInput && input.type === 'password'
+            && eligible(input) && !isLikelyOldPassword(input);
+        if (triggerInput.form) {
+            return [triggerInput, ...Array.from(triggerInput.form.elements).filter(companion)];
         }
-        const filtered = candidates.filter(shouldAutoFillPassword).filter(input => !isLikelyOldPassword(input));
-        if (!filtered.includes(triggerInput) && shouldAutoFillPassword(triggerInput) && !isLikelyOldPassword(triggerInput)) {
-            filtered.unshift(triggerInput);
+        const document = triggerInput.ownerDocument;
+        for (let scope = triggerInput.parentElement; scope; scope = scope.parentElement) {
+            if (scope === document.body || scope === document.documentElement) break;
+            const candidates = Array.from(scope.querySelectorAll('input[type="password"]'))
+                .filter(input => !input.form && companion(input));
+            if (candidates.length > 0) return [triggerInput, ...candidates];
         }
-        return filtered;
+        return [triggerInput];
+    }
+
+    function setPasswordFieldValue(field, password) {
+        const view = field.ownerDocument.defaultView;
+        const setter = Object.getOwnPropertyDescriptor(view.HTMLInputElement.prototype, 'value')?.set;
+        if (!setter) throw new Error('Native input value setter unavailable');
+        setter.call(field, password);
+        field.dispatchEvent(new view.Event('input', { bubbles: true }));
+        field.dispatchEvent(new view.Event('change', { bubbles: true }));
     }
 
     function positionLockButton(input) {
         const btn = lockButtons.get(input);
         if (!btn) return;
-        if (input.offsetParent === null) {
+        if (!input.isConnected) {
+            removeLockButton(input);
+            return;
+        }
+        if (input.offsetParent === null || !shouldAutoFillPassword(input)) {
             btn.style.display = 'none';
             return;
         }
@@ -3392,7 +3490,8 @@ limitations under the License.
     }
 
     function createLockButton(input) {
-        if (!inputButtonsEnabled || lockButtons.has(input) || !isLikelyPasswordField(input)) return;
+        if (input.type === 'password') knownPasswordInputs.add(input);
+        if (!inputButtonsEnabled || lockButtons.has(input) || !shouldAutoFillPassword(input)) return;
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.innerHTML = lockIconSVG();
@@ -3442,16 +3541,21 @@ limitations under the License.
     }
 
     function fillPasswordInput(input) {
-        if (securityMode === 'safer' && !window.isSecureContext) {
-            showStatusMessage(i18n.insecureContext, true);
+        if (!window.isSecureContext) {
+            showStatusMessage('insecureContext', true);
             return;
         }
-        if (!input?.isConnected || !shouldAutoFillPassword(input) || isLikelyOldPassword(input)) {
-            showStatusMessage(i18n.saferDescription);
+        if (!input?.isConnected || !shouldAutoFillPassword(input)) {
+            showStatusMessage('fillUnavailable');
             return;
         }
         let password = '';
         try {
+            const targets = collectPasswordTargets(input);
+            if (targets.length === 0) {
+                showStatusMessage('fillUnavailable');
+                return;
+            }
             const { length, includeUppercase, includeNumbers, includeSymbols } = getCurrentOptions();
             password = generatePassword(length, includeUppercase, includeNumbers, includeSymbols);
             if (securityMode !== 'safer') {
@@ -3460,18 +3564,15 @@ limitations under the License.
                 }
                 lastLockPassword = password;
             }
-            const targets = collectPasswordTargets(input);
             targets.forEach(field => {
-                field.value = password;
-                field.dispatchEvent(new Event('input', { bubbles: true }));
-                field.dispatchEvent(new Event('change', { bubbles: true }));
+                setPasswordFieldValue(field, password);
             });
             currentPassword = '';
             isPasswordVisible = false;
             hideNotification(notification);
         } catch {
             lastLockPassword = '';
-            showStatusMessage(strings.secureRandomUnavailable, true);
+            showStatusMessage('secureRandomUnavailable', true);
         } finally {
             password = '';
             currentPassword = '';
@@ -3481,13 +3582,13 @@ limitations under the License.
 
     document.addEventListener('focusin', event => {
         const input = event.target;
-        if (input instanceof HTMLInputElement && input.type === 'password' && isLikelyPasswordField(input)) {
+        if (input instanceof HTMLInputElement && shouldAutoFillPassword(input)) {
             lastFocusedPasswordInput = input;
         }
     }, true);
 
     function scanPasswordFields(root = document) {
-        const fields = root.querySelectorAll('input[type="password"]');
+        const fields = root.querySelectorAll(passwordInputSelector);
         fields.forEach(createLockButton);
     }
 
@@ -3512,23 +3613,36 @@ limitations under the License.
     window.addEventListener('scroll', scheduleRepositionAll, { passive: true, capture: true });
 
     const mutationObserver = new MutationObserver(mutations => {
+        let needsReposition = false;
+        let removedContent = false;
         mutations.forEach(mutation => {
+            if (mutation.type === 'attributes') {
+                const input = mutation.target;
+                if (!(input instanceof HTMLInputElement)) return;
+                needsReposition = true;
+                if (input.matches(passwordInputSelector) || knownPasswordInputs.has(input)) createLockButton(input);
+                positionLockButton(input);
+                return;
+            }
+            needsReposition = true;
+            removedContent ||= mutation.removedNodes.length > 0;
             mutation.addedNodes.forEach(node => {
                 if (node.nodeType !== 1) return;
-                if (node.matches && node.matches('input[type="password"]')) createLockButton(node);
-                node.querySelectorAll?.('input[type="password"]').forEach(createLockButton);
-            });
-            mutation.removedNodes.forEach(node => {
-                if (node.nodeType !== 1) return;
-                if (lockButtons.has(node)) removeLockButton(node);
-                node.querySelectorAll?.('input[type="password"]').forEach(removeLockButton);
+                if (node.matches && node.matches(passwordInputSelector)) createLockButton(node);
+                node.querySelectorAll?.(passwordInputSelector).forEach(createLockButton);
             });
         });
-        scheduleRepositionAll();
+        if (removedContent) {
+            observedInputs.forEach(input => { if (!input.isConnected) removeLockButton(input); });
+        }
+        if (needsReposition) scheduleRepositionAll();
     });
 
     if (document.body) {
-        mutationObserver.observe(document.body, { childList: true, subtree: true });
+        mutationObserver.observe(document.body, {
+            childList: true, subtree: true, attributes: true,
+            attributeFilter: ['type', 'autocomplete', 'disabled', 'readonly']
+        });
     }
 
     function generateAndCopyPassword() {
@@ -3542,7 +3656,7 @@ limitations under the License.
             password = generatePassword(length, includeUppercase, includeNumbers, includeSymbols);
         } catch (err) {
             console.error('Secure password generation failed:', err);
-            notificationTitle.textContent = strings.secureRandomUnavailable;
+            setNotificationMessage('secureRandomUnavailable');
             setNotificationState(true);
             currentPassword = '';
             showPasswordNotification(notification, notificationPassword, eyeButton);
@@ -3550,7 +3664,7 @@ limitations under the License.
         }
 
         if (!copyOnGenerateEnabled) {
-            notificationTitle.textContent = strings.generated;
+            setNotificationMessage('generated');
             setNotificationState(false);
             notificationStatusIcon.style.display = 'none';
             currentPassword = password;
@@ -3562,11 +3676,11 @@ limitations under the License.
         const copyPromise = copyTextToClipboard(password);
 
         copyPromise.then(() => {
-            notificationTitle.textContent = strings.copied;
+            setNotificationMessage('copied');
             setNotificationState(false);
         }).catch(err => {
-            console.error('Erreur lors de la copie :', err);
-            notificationTitle.textContent = strings.copyFailed;
+            console.error('Clipboard copy failed:', err);
+            setNotificationMessage('copyFailed');
             setNotificationState(true);
         }).finally(() => {
             currentPassword = password;
@@ -3639,15 +3753,25 @@ limitations under the License.
         if (securityMode === 'safer') purgeSensitiveData();
     }, { passive: true });
 
-    if (typeof GM_registerMenuCommand === 'function') {
+    const menuCommandIds = [];
+
+    function refreshMenuCommands() {
+        if (typeof GM_registerMenuCommand !== 'function') return;
+        if (menuCommandIds.length && typeof GM_unregisterMenuCommand !== 'function') return;
         try {
-            GM_registerMenuCommand(strings.settingsMenu, openSettingsPanel);
-            GM_registerMenuCommand(i18n.generateFull || translations.en.generateFull, generateAndCopyPassword);
+            if (typeof GM_unregisterMenuCommand === 'function') {
+                menuCommandIds.splice(0).forEach(id => {
+                    if (id !== undefined && id !== null) GM_unregisterMenuCommand(id);
+                });
+            }
+            menuCommandIds.push(GM_registerMenuCommand(strings.settingsMenu, openSettingsPanel));
+            menuCommandIds.push(GM_registerMenuCommand(strings.generateFull, generateAndCopyPassword));
         } catch (err) {
             console.warn('GM_registerMenuCommand failed', err);
         }
     }
 
+    applyLanguage(userLang, false);
 
 
 })();
